@@ -18,7 +18,7 @@ Open `index.html` (or the GitHub Pages site) to:
 | `index.html` | The app (built from `src/index.src.html` with Leaflet CSS inlined) |
 | `data/substations.csv` / `.json` | Sub-station register – **edit this to update status** (e.g. UC → Existing) |
 | `data/district_stats.json` | District-wise figures and status score |
-| `data/districts.geojson` | District boundaries (Census 2011, 38 districts) |
+| `data/districts_geo.json` | District boundaries (Census 2011, 38 districts) |
 | `data/l765.png … l132.png` | Line layers traced from the original map |
 | `data/original_map.jpg` | The original BSPHCL map, re-projected to overlay exactly |
 | `tools/` | Python pipeline used to georeference the PDF, trace layers and compute the analysis |

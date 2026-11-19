@@ -884,7 +884,7 @@ const isGrid=s=>GRID.includes(s.kv);
 async function boot(){
  $('#st-load').classList.remove('hide');$('#st-err').classList.add('hide');
  try{const g=u=>fetch(u).then(r=>{if(!r.ok)throw 0;return r.json()});
-  [S,D,GEO,BOUNDS]=await Promise.all([g('data/substations.json'),g('data/district_stats.json'),g('data/districts.geojson'),g('data/overlay_bounds.json')]);
+  [S,D,GEO,BOUNDS]=await Promise.all([g('data/substations.json'),g('data/district_stats.json'),g('data/districts_geo.json'),g('data/overlay_bounds.json')]);
  }catch(e){$('#st-load').classList.add('hide');$('#st-err').classList.remove('hide');return}
  $('#st-load').classList.add('hide');
  initMap();renderAll();

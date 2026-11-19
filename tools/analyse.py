@@ -83,7 +83,7 @@ for d in districts:
     s += max(0, 30 - (d['pop_lakh_per_gss'] or 30) * 3) if d['pop_lakh_per_gss'] else 0
     d['score'] = round(s)
     d['band'] = 'Good' if d['score'] >= 70 else ('Watch' if d['score'] >= 50 else 'Weak')
-json.dump(dict(type='FeatureCollection', features=feats), open(f'{OUT}/districts.geojson', 'w'), separators=(',', ':'))
+json.dump(dict(type='FeatureCollection', features=feats), open(f'{OUT}/districts_geo.json', 'w'), separators=(',', ':'))
 json.dump(sorted(districts, key=lambda d: d['district']), open(f'{OUT}/district_stats.json', 'w'), indent=1)
 pub = [{k: v for k, v in s.items() if k != 'px'} for s in S]
 json.dump(pub, open(f'{OUT}/substations.json', 'w'), indent=1)
