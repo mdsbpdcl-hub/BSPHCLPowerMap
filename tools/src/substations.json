@@ -1,0 +1,3026 @@
+[
+ {
+  "id": 1,
+  "name": "Valmikinagar (BHPC)",
+  "kv": "Hydro",
+  "status": "Existing",
+  "owner": "BHPC",
+  "lat": 27.41327,
+  "lon": 83.92352,
+  "district": "West Champaran",
+  "discom": "NBPDCL",
+  "note": "Hydro generating station",
+  "px": [
+   705,
+   360
+  ]
+ },
+ {
+  "id": 2,
+  "name": "Ramnagar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 27.14175,
+  "lon": 84.32554,
+  "district": "West Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1090,
+   620
+  ]
+ },
+ {
+  "id": 3,
+  "name": "Narkatiaganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 27.16058,
+  "lon": 84.62834,
+  "district": "West Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1380,
+   602
+  ]
+ },
+ {
+  "id": 4,
+  "name": "Raxaul",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.95693,
+  "lon": 84.83928,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "33 kV link to Nepal",
+  "px": [
+   1582,
+   797
+  ]
+ },
+ {
+  "id": 5,
+  "name": "Dhanaha",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.77095,
+  "lon": 84.26503,
+  "district": "West Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1032,
+   975
+  ]
+ },
+ {
+  "id": 6,
+  "name": "Bettiah",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.80232,
+  "lon": 84.54276,
+  "district": "West Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1298,
+   945
+  ]
+ },
+ {
+  "id": 7,
+  "name": "Raxaul (New)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 26.82845,
+  "lon": 84.76412,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "220/132/33 kV",
+  "px": [
+   1510,
+   920
+  ]
+ },
+ {
+  "id": 8,
+  "name": "Motihari (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 26.60597,
+  "lon": 84.68896,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "400/132 kV",
+  "px": [
+   1438,
+   1133
+  ]
+ },
+ {
+  "id": 9,
+  "name": "Motihari",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.62479,
+  "lon": 84.89466,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1635,
+   1115
+  ]
+ },
+ {
+  "id": 10,
+  "name": "Dhaka",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.69794,
+  "lon": 85.13689,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1867,
+   1045
+  ]
+ },
+ {
+  "id": 11,
+  "name": "Pakridayal",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.58303,
+  "lon": 85.04606,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1780,
+   1155
+  ]
+ },
+ {
+  "id": 12,
+  "name": "Areraj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.50988,
+  "lon": 84.68271,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1432,
+   1225
+  ]
+ },
+ {
+  "id": 13,
+  "name": "Hathua",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.49417,
+  "lon": 84.3465,
+  "district": "Gopalganj",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1110,
+   1240
+  ]
+ },
+ {
+  "id": 14,
+  "name": "Gopalganj",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.4524,
+  "lon": 84.45092,
+  "district": "Gopalganj",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1210,
+   1280
+  ]
+ },
+ {
+  "id": 15,
+  "name": "Chakiya",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.4368,
+  "lon": 85.04086,
+  "district": "East Champaran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1775,
+   1295
+  ]
+ },
+ {
+  "id": 16,
+  "name": "Motipur",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.29581,
+  "lon": 85.11396,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1845,
+   1430
+  ]
+ },
+ {
+  "id": 17,
+  "name": "Sheohar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.54128,
+  "lon": 85.31232,
+  "district": "Sheohar",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2035,
+   1195
+  ]
+ },
+ {
+  "id": 18,
+  "name": "Sitamarhi",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.5622,
+  "lon": 85.52115,
+  "district": "Sitamarhi",
+  "discom": "NBPDCL",
+  "note": "33 kV link to Nepal",
+  "px": [
+   2235,
+   1175
+  ]
+ },
+ {
+  "id": 19,
+  "name": "Sitamarhi (New)",
+  "kv": "400",
+  "status": "UC",
+  "owner": "PGCIL",
+  "lat": 26.50998,
+  "lon": 85.59946,
+  "district": "Sitamarhi",
+  "discom": "NBPDCL",
+  "note": "400/220/132 kV",
+  "px": [
+   2310,
+   1225
+  ]
+ },
+ {
+  "id": 20,
+  "name": "Belsand",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.46087,
+  "lon": 85.39899,
+  "district": "Sitamarhi",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2118,
+   1272
+  ]
+ },
+ {
+  "id": 21,
+  "name": "Pupri",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.64891,
+  "lon": 85.71743,
+  "district": "Sitamarhi",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2423,
+   1092
+  ]
+ },
+ {
+  "id": 22,
+  "name": "Runnisaidpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.38986,
+  "lon": 85.51072,
+  "district": "Sitamarhi",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2225,
+   1340
+  ]
+ },
+ {
+  "id": 23,
+  "name": "Benipatti",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.42959,
+  "lon": 85.86573,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2565,
+   1302
+  ]
+ },
+ {
+  "id": 24,
+  "name": "Jainagar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.58315,
+  "lon": 86.11108,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2800,
+   1155
+  ]
+ },
+ {
+  "id": 25,
+  "name": "Madhubani",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.36067,
+  "lon": 86.03593,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2728,
+   1368
+  ]
+ },
+ {
+  "id": 26,
+  "name": "Pandaul",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.25205,
+  "lon": 86.061,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2752,
+   1472
+  ]
+ },
+ {
+  "id": 27,
+  "name": "Laukahi",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.43699,
+  "lon": 86.64361,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   3310,
+   1295
+  ]
+ },
+ {
+  "id": 28,
+  "name": "Phulparas",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.35341,
+  "lon": 86.47447,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3148,
+   1375
+  ]
+ },
+ {
+  "id": 29,
+  "name": "Kataiya",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.49656,
+  "lon": 86.95475,
+  "district": "Supaul",
+  "discom": "NBPDCL",
+  "note": "Link to Kushaha (Nepal)",
+  "px": [
+   3608,
+   1238
+  ]
+ },
+ {
+  "id": 30,
+  "name": "Raghopur",
+  "kv": "132",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 26.25944,
+  "lon": 86.80651,
+  "district": "Supaul",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3466,
+   1465
+  ]
+ },
+ {
+  "id": 31,
+  "name": "Forbesganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.2856,
+  "lon": 87.22312,
+  "district": "Araria",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3865,
+   1440
+  ]
+ },
+ {
+  "id": 32,
+  "name": "Siwan",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.22574,
+  "lon": 84.36741,
+  "district": "Siwan",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1130,
+   1497
+  ]
+ },
+ {
+  "id": 33,
+  "name": "Siwan (New) GSS",
+  "kv": "132",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 26.09517,
+  "lon": 84.26093,
+  "district": "Siwan",
+  "discom": "NBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   1028,
+   1622
+  ]
+ },
+ {
+  "id": 34,
+  "name": "Maharajganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.22578,
+  "lon": 84.69632,
+  "district": "Siwan",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1445,
+   1497
+  ]
+ },
+ {
+  "id": 35,
+  "name": "MTPS Kanti",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "KBUNL/NTPC",
+  "lat": 26.2227,
+  "lon": 85.20063,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "Muzaffarpur Thermal Power Station",
+  "px": [
+   1928,
+   1500
+  ]
+ },
+ {
+  "id": 36,
+  "name": "Mashrakh",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.13179,
+  "lon": 84.79343,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1538,
+   1587
+  ]
+ },
+ {
+  "id": 37,
+  "name": "Muzaffarpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.13915,
+  "lon": 85.26538,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1990,
+   1580
+  ]
+ },
+ {
+  "id": 38,
+  "name": "Amnour (Chapra New) BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 25.99078,
+  "lon": 84.81851,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1562,
+   1722
+  ]
+ },
+ {
+  "id": 39,
+  "name": "Ekma",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.96151,
+  "lon": 84.54495,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1300,
+   1750
+  ]
+ },
+ {
+  "id": 40,
+  "name": "Bela Rail",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "Railways",
+  "lat": 25.925,
+  "lon": 84.99915,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "Rail Wheel Plant, Bela",
+  "px": [
+   1735,
+   1785
+  ]
+ },
+ {
+  "id": 41,
+  "name": "Vaishali",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.97202,
+  "lon": 85.13488,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1865,
+   1740
+  ]
+ },
+ {
+  "id": 42,
+  "name": "Hajipur",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.79447,
+  "lon": 85.24663,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1972,
+   1910
+  ]
+ },
+ {
+  "id": 43,
+  "name": "Hajipur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.72658,
+  "lon": 85.24454,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   1970,
+   1975
+  ]
+ },
+ {
+  "id": 44,
+  "name": "Sheetalpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.76311,
+  "lon": 85.02005,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1755,
+   1940
+  ]
+ },
+ {
+  "id": 45,
+  "name": "Chapra",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.78188,
+  "lon": 84.76946,
+  "district": "Saran",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   1515,
+   1922
+  ]
+ },
+ {
+  "id": 46,
+  "name": "SKMCH",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.18617,
+  "lon": 85.39589,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2115,
+   1535
+  ]
+ },
+ {
+  "id": 47,
+  "name": "Muzaffarpur (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 26.08694,
+  "lon": 85.37502,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   2095,
+   1630
+  ]
+ },
+ {
+  "id": 48,
+  "name": "Mushahari",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.08173,
+  "lon": 85.48466,
+  "district": "Muzaffarpur",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2200,
+   1635
+  ]
+ },
+ {
+  "id": 49,
+  "name": "Gangwara",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.17578,
+  "lon": 85.92318,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2620,
+   1545
+  ]
+ },
+ {
+  "id": 50,
+  "name": "Darbhanga",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.09745,
+  "lon": 85.90753,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   2605,
+   1620
+  ]
+ },
+ {
+  "id": 51,
+  "name": "Darbhanga",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.09536,
+  "lon": 85.97331,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2668,
+   1622
+  ]
+ },
+ {
+  "id": 52,
+  "name": "Darbhanga (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 26.00346,
+  "lon": 86.03284,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   2725,
+   1710
+  ]
+ },
+ {
+  "id": 53,
+  "name": "Shahpur Patori",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.90629,
+  "lon": 85.77703,
+  "district": "Samastipur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2480,
+   1803
+  ]
+ },
+ {
+  "id": 54,
+  "name": "Samastipur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.8384,
+  "lon": 85.77182,
+  "district": "Samastipur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2475,
+   1868
+  ]
+ },
+ {
+  "id": 55,
+  "name": "Samastipur (New)",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.85721,
+  "lon": 85.82403,
+  "district": "Samastipur",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2525,
+   1850
+  ]
+ },
+ {
+  "id": 56,
+  "name": "Rosera",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.79979,
+  "lon": 86.06418,
+  "district": "Samastipur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2755,
+   1905
+  ]
+ },
+ {
+  "id": 57,
+  "name": "Goraul",
+  "kv": "132",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.90937,
+  "lon": 85.32805,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2050,
+   1800
+  ]
+ },
+ {
+  "id": 58,
+  "name": "Jandaha",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.6817,
+  "lon": 85.49514,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2210,
+   2018
+  ]
+ },
+ {
+  "id": 59,
+  "name": "Mahnar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.65349,
+  "lon": 85.44294,
+  "district": "Vaishali",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2160,
+   2045
+  ]
+ },
+ {
+  "id": 60,
+  "name": "Dalsinghsarai",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.6504,
+  "lon": 85.83971,
+  "district": "Samastipur",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2540,
+   2048
+  ]
+ },
+ {
+  "id": 61,
+  "name": "Teghra",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.58354,
+  "lon": 85.76663,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2470,
+   2112
+  ]
+ },
+ {
+  "id": 62,
+  "name": "Triveniganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.21246,
+  "lon": 86.99342,
+  "district": "Supaul",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3645,
+   1510
+  ]
+ },
+ {
+  "id": 63,
+  "name": "Nirmali",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.18629,
+  "lon": 86.42959,
+  "district": "Supaul",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3105,
+   1535
+  ]
+ },
+ {
+  "id": 64,
+  "name": "Jhanjharpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.1445,
+  "lon": 86.37425,
+  "district": "Madhubani",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3052,
+   1575
+  ]
+ },
+ {
+  "id": 65,
+  "name": "Supaul",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.13408,
+  "lon": 86.59666,
+  "district": "Supaul",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3265,
+   1585
+  ]
+ },
+ {
+  "id": 66,
+  "name": "Benipur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.09226,
+  "lon": 86.26776,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2950,
+   1625
+  ]
+ },
+ {
+  "id": 67,
+  "name": "Madhepura",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.96698,
+  "lon": 86.76687,
+  "district": "Madhepura",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   3428,
+   1745
+  ]
+ },
+ {
+  "id": 68,
+  "name": "Saharsa",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.92518,
+  "lon": 86.58624,
+  "district": "Saharsa",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3255,
+   1785
+  ]
+ },
+ {
+  "id": 69,
+  "name": "Saharsa (New)",
+  "kv": "400",
+  "status": "UC",
+  "owner": "PGCIL",
+  "lat": 25.8834,
+  "lon": 86.52568,
+  "district": "Saharsa",
+  "discom": "NBPDCL",
+  "note": "400/220/132 kV",
+  "px": [
+   3197,
+   1825
+  ]
+ },
+ {
+  "id": 70,
+  "name": "Kusheshwarsthan",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.8207,
+  "lon": 86.2657,
+  "district": "Darbhanga",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2948,
+   1885
+  ]
+ },
+ {
+  "id": 71,
+  "name": "Sonebarsa",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.77166,
+  "lon": 86.67292,
+  "district": "Saharsa",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3338,
+   1932
+  ]
+ },
+ {
+  "id": 72,
+  "name": "Simri Bakhtiyarpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.73509,
+  "lon": 86.55807,
+  "district": "Saharsa",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3228,
+   1967
+  ]
+ },
+ {
+  "id": 73,
+  "name": "Udakishanganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.70588,
+  "lon": 86.93083,
+  "district": "Madhepura",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3585,
+   1995
+  ]
+ },
+ {
+  "id": 74,
+  "name": "Araria",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.15193,
+  "lon": 87.42152,
+  "district": "Araria",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4055,
+   1568
+  ]
+ },
+ {
+  "id": 75,
+  "name": "Kishanganj (New)",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.14781,
+  "lon": 87.89138,
+  "district": "Kishanganj",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   4505,
+   1572
+  ]
+ },
+ {
+  "id": 76,
+  "name": "Kishanganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 26.09559,
+  "lon": 87.93315,
+  "district": "Kishanganj",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4545,
+   1622
+  ]
+ },
+ {
+  "id": 77,
+  "name": "Kishanganj (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 26.19168,
+  "lon": 87.96969,
+  "district": "Kishanganj",
+  "discom": "NBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   4580,
+   1530
+  ]
+ },
+ {
+  "id": 78,
+  "name": "Banmankhi",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.88348,
+  "lon": 87.21272,
+  "district": "Purnia",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3855,
+   1825
+  ]
+ },
+ {
+  "id": 79,
+  "name": "Purnea",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.85215,
+  "lon": 87.32236,
+  "district": "Purnia",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3960,
+   1855
+  ]
+ },
+ {
+  "id": 80,
+  "name": "Dhamdaha",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.79262,
+  "lon": 87.29105,
+  "district": "Purnia",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3930,
+   1912
+  ]
+ },
+ {
+  "id": 81,
+  "name": "Purnea (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.78428,
+  "lon": 87.47899,
+  "district": "Purnia",
+  "discom": "NBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   4110,
+   1920
+  ]
+ },
+ {
+  "id": 82,
+  "name": "Baisi",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.89608,
+  "lon": 87.79222,
+  "district": "Purnia",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4410,
+   1813
+  ]
+ },
+ {
+  "id": 83,
+  "name": "Barsoi",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.62974,
+  "lon": 87.84446,
+  "district": "Katihar",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4460,
+   2068
+  ]
+ },
+ {
+  "id": 84,
+  "name": "Katihar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.54928,
+  "lon": 87.55211,
+  "district": "Katihar",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4180,
+   2145
+  ]
+ },
+ {
+  "id": 85,
+  "name": "Korha (New)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.57537,
+  "lon": 87.34537,
+  "district": "Katihar",
+  "discom": "NBPDCL",
+  "note": "220/132/33 kV",
+  "px": [
+   3982,
+   2120
+  ]
+ },
+ {
+  "id": 86,
+  "name": "Manihari",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.37695,
+  "lon": 87.65132,
+  "district": "Katihar",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   4275,
+   2310
+  ]
+ },
+ {
+  "id": 87,
+  "name": "Kahalgaon NTPC",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "NTPC",
+  "lat": 25.29648,
+  "lon": 87.25456,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "Kahalgaon STPS with 400 kV switchyard",
+  "px": [
+   3895,
+   2387
+  ]
+ },
+ {
+  "id": 88,
+  "name": "Kahalgaon",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.1889,
+  "lon": 87.24935,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3890,
+   2490
+  ]
+ },
+ {
+  "id": 89,
+  "name": "Naugachhia",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.41344,
+  "lon": 87.0666,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3715,
+   2275
+  ]
+ },
+ {
+  "id": 90,
+  "name": "Dumraon",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.56978,
+  "lon": 84.1336,
+  "district": "Buxar",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   906,
+   2125
+  ]
+ },
+ {
+  "id": 91,
+  "name": "Buxar",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.50083,
+  "lon": 84.00831,
+  "district": "Buxar",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   786,
+   2191
+  ]
+ },
+ {
+  "id": 92,
+  "name": "Dumraon (New)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.49563,
+  "lon": 84.20043,
+  "district": "Buxar",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   970,
+   2196
+  ]
+ },
+ {
+  "id": 93,
+  "name": "Buxar IPP (Chausa)",
+  "kv": "Thermal",
+  "status": "UC",
+  "owner": "SJVN",
+  "lat": 25.42355,
+  "lon": 84.09603,
+  "district": "Buxar",
+  "discom": "SBPDCL",
+  "note": "Buxar thermal power project",
+  "px": [
+   870,
+   2265
+  ]
+ },
+ {
+  "id": 94,
+  "name": "Karmanasa",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.23547,
+  "lon": 83.42258,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   225,
+   2445
+  ]
+ },
+ {
+  "id": 95,
+  "name": "Karmanasa (New)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.24592,
+  "lon": 83.53221,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "220/132/33 kV",
+  "px": [
+   330,
+   2435
+  ]
+ },
+ {
+  "id": 96,
+  "name": "Pusauli HVDC",
+  "kv": "HVDC",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.24594,
+  "lon": 83.69406,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "HVDC back-to-back terminal",
+  "px": [
+   485,
+   2435
+  ]
+ },
+ {
+  "id": 97,
+  "name": "Ramgarh",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.1467,
+  "lon": 83.55311,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   350,
+   2530
+  ]
+ },
+ {
+  "id": 98,
+  "name": "Mohania",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.15506,
+  "lon": 83.62411,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   418,
+   2522
+  ]
+ },
+ {
+  "id": 99,
+  "name": "Pusauli",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.09657,
+  "lon": 83.61054,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   405,
+   2578
+  ]
+ },
+ {
+  "id": 100,
+  "name": "Pusauli / Sasaram (PG)",
+  "kv": "765",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.11538,
+  "lon": 83.72017,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "765/400/220 kV",
+  "px": [
+   510,
+   2560
+  ]
+ },
+ {
+  "id": 101,
+  "name": "Kochas",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.23552,
+  "lon": 83.91855,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   700,
+   2445
+  ]
+ },
+ {
+  "id": 102,
+  "name": "Bhabhua",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.9848,
+  "lon": 83.55835,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   355,
+   2685
+  ]
+ },
+ {
+  "id": 103,
+  "name": "Kudra",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.99005,
+  "lon": 83.75151,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   540,
+   2680
+  ]
+ },
+ {
+  "id": 104,
+  "name": "Kudra TSS",
+  "kv": "TSS",
+  "status": "Existing",
+  "owner": "Railways",
+  "lat": 24.93782,
+  "lon": 83.66799,
+  "district": "Kaimur",
+  "discom": "SBPDCL",
+  "note": "Railway traction sub-station",
+  "px": [
+   460,
+   2730
+  ]
+ },
+ {
+  "id": 105,
+  "name": "Sasaram",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.87517,
+  "lon": 83.91337,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   695,
+   2790
+  ]
+ },
+ {
+  "id": 106,
+  "name": "Dehri",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.92221,
+  "lon": 84.18693,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   957,
+   2745
+  ]
+ },
+ {
+  "id": 107,
+  "name": "Sonenagar (New)",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.87834,
+  "lon": 84.22348,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "220 kV Sonenagar (New) & 132/33 kV Sonenagar",
+  "px": [
+   992,
+   2787
+  ]
+ },
+ {
+  "id": 108,
+  "name": "Bikramganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.26167,
+  "lon": 84.23701,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1005,
+   2420
+  ]
+ },
+ {
+  "id": 109,
+  "name": "Ara",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.55939,
+  "lon": 84.5711,
+  "district": "Bhojpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1325,
+   2135
+  ]
+ },
+ {
+  "id": 110,
+  "name": "Ara (PG)",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.54373,
+  "lon": 84.64941,
+  "district": "Bhojpur",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1400,
+   2150
+  ]
+ },
+ {
+  "id": 111,
+  "name": "Jagdishpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.46223,
+  "lon": 84.40927,
+  "district": "Bhojpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1170,
+   2228
+  ]
+ },
+ {
+  "id": 112,
+  "name": "Piro",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.3087,
+  "lon": 84.44583,
+  "district": "Bhojpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1205,
+   2375
+  ]
+ },
+ {
+  "id": 113,
+  "name": "Naubatpur (New)",
+  "kv": "400",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.37662,
+  "lon": 84.75906,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "400/220/132 kV",
+  "px": [
+   1505,
+   2310
+  ]
+ },
+ {
+  "id": 114,
+  "name": "Jakkanpur (New)",
+  "kv": "400",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.32963,
+  "lon": 84.87392,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "400/220/132 kV",
+  "px": [
+   1615,
+   2355
+  ]
+ },
+ {
+  "id": 115,
+  "name": "Masaurhi",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.36621,
+  "lon": 85.04307,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1777,
+   2320
+  ]
+ },
+ {
+  "id": 116,
+  "name": "Jehanabad",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.19386,
+  "lon": 84.98357,
+  "district": "Jehanabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1720,
+   2485
+  ]
+ },
+ {
+  "id": 117,
+  "name": "Ataula",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.19906,
+  "lon": 84.76952,
+  "district": "Arwal",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1515,
+   2480
+  ]
+ },
+ {
+  "id": 118,
+  "name": "Tehta",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.11553,
+  "lon": 84.99924,
+  "district": "Jehanabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1735,
+   2560
+  ]
+ },
+ {
+  "id": 119,
+  "name": "Ekangar Sarai",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.22523,
+  "lon": 85.22894,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1955,
+   2455
+  ]
+ },
+ {
+  "id": 120,
+  "name": "Hulasganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.06332,
+  "lon": 85.13499,
+  "district": "Jehanabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1865,
+   2610
+  ]
+ },
+ {
+  "id": 121,
+  "name": "Goh",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.97449,
+  "lon": 84.67036,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1420,
+   2695
+  ]
+ },
+ {
+  "id": 122,
+  "name": "Tekari",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.94839,
+  "lon": 84.84264,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1585,
+   2720
+  ]
+ },
+ {
+  "id": 123,
+  "name": "Belaganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.97452,
+  "lon": 84.97315,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1710,
+   2695
+  ]
+ },
+ {
+  "id": 124,
+  "name": "Khizirsarai BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 24.90874,
+  "lon": 85.15067,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1880,
+   2758
+  ]
+ },
+ {
+  "id": 125,
+  "name": "Patna (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.41846,
+  "lon": 85.25502,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   1980,
+   2270
+  ]
+ },
+ {
+  "id": 126,
+  "name": "Bihta",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.65655,
+  "lon": 84.83943,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   1582,
+   2042
+  ]
+ },
+ {
+  "id": 127,
+  "name": "Bihta",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.59911,
+  "lon": 84.86345,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132/33 kV",
+  "px": [
+   1605,
+   2097
+  ]
+ },
+ {
+  "id": 128,
+  "name": "Karbigahia",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.63047,
+  "lon": 85.1036,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1835,
+   2067
+  ]
+ },
+ {
+  "id": 129,
+  "name": "Khagaul",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.58554,
+  "lon": 84.96786,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1705,
+   2110
+  ]
+ },
+ {
+  "id": 130,
+  "name": "Bhusaula (Danapur)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.68791,
+  "lon": 84.99604,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1732,
+   2012
+  ]
+ },
+ {
+  "id": 131,
+  "name": "Digha",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.67747,
+  "lon": 85.07749,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1810,
+   2022
+  ]
+ },
+ {
+  "id": 132,
+  "name": "Mithapur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.56989,
+  "lon": 85.11405,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1845,
+   2125
+  ]
+ },
+ {
+  "id": 133,
+  "name": "Gaighat",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.60646,
+  "lon": 85.19757,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1925,
+   2090
+  ]
+ },
+ {
+  "id": 134,
+  "name": "Katra",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.55946,
+  "lon": 85.24143,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1967,
+   2135
+  ]
+ },
+ {
+  "id": 135,
+  "name": "Jakkanpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.53334,
+  "lon": 85.19445,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1922,
+   2160
+  ]
+ },
+ {
+  "id": 136,
+  "name": "Gaurichak",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.47068,
+  "lon": 85.18923,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1917,
+   2220
+  ]
+ },
+ {
+  "id": 137,
+  "name": "Fatuha",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.52291,
+  "lon": 85.29677,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2020,
+   2170
+  ]
+ },
+ {
+  "id": 138,
+  "name": "Manjhaul",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.55957,
+  "lon": 86.18429,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2870,
+   2135
+  ]
+ },
+ {
+  "id": 139,
+  "name": "Bakhtiyarpur (New)",
+  "kv": "220",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 25.45505,
+  "lon": 85.52127,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2235,
+   2235
+  ]
+ },
+ {
+  "id": 140,
+  "name": "Barh",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.46864,
+  "lon": 85.6852,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2392,
+   2222
+  ]
+ },
+ {
+  "id": 141,
+  "name": "Barh NTPC",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "NTPC",
+  "lat": 25.4885,
+  "lon": 85.77186,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "Barh STPP",
+  "px": [
+   2475,
+   2203
+  ]
+ },
+ {
+  "id": 142,
+  "name": "Barauni TPS (BTPS)",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "NTPC",
+  "lat": 25.5021,
+  "lon": 85.98591,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "Barauni Thermal Power Station",
+  "px": [
+   2680,
+   2190
+  ]
+ },
+ {
+  "id": 143,
+  "name": "Begusarai",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.46033,
+  "lon": 86.0329,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2725,
+   2230
+  ]
+ },
+ {
+  "id": 144,
+  "name": "Harnaut",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.3506,
+  "lon": 85.53173,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2245,
+   2335
+  ]
+ },
+ {
+  "id": 145,
+  "name": "Hathidah BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 25.36631,
+  "lon": 85.89195,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2590,
+   2320
+  ]
+ },
+ {
+  "id": 146,
+  "name": "Hathidah",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.36423,
+  "lon": 85.99114,
+  "district": "Patna",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2685,
+   2322
+  ]
+ },
+ {
+  "id": 147,
+  "name": "Baripahari",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.24615,
+  "lon": 85.51085,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2225,
+   2435
+  ]
+ },
+ {
+  "id": 148,
+  "name": "Biharsharif",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.16781,
+  "lon": 85.5213,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2235,
+   2510
+  ]
+ },
+ {
+  "id": 149,
+  "name": "Biharsharif (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.17827,
+  "lon": 85.63094,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "400/220 kV",
+  "px": [
+   2340,
+   2500
+  ]
+ },
+ {
+  "id": 150,
+  "name": "Nalanda",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.13125,
+  "lon": 85.43778,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2155,
+   2545
+  ]
+ },
+ {
+  "id": 151,
+  "name": "Sheikhpura BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 25.18873,
+  "lon": 85.78756,
+  "district": "Sheikhpura",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2490,
+   2490
+  ]
+ },
+ {
+  "id": 152,
+  "name": "Sheikhpura",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.14696,
+  "lon": 85.85021,
+  "district": "Sheikhpura",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2550,
+   2530
+  ]
+ },
+ {
+  "id": 153,
+  "name": "Lakhisarai",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.24099,
+  "lon": 86.03814,
+  "district": "Lakhisarai",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2730,
+   2440
+  ]
+ },
+ {
+  "id": 154,
+  "name": "Lakhisarai (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 25.20966,
+  "lon": 86.11646,
+  "district": "Lakhisarai",
+  "discom": "SBPDCL",
+  "note": "400/132 kV",
+  "px": [
+   2805,
+   2470
+  ]
+ },
+ {
+  "id": 155,
+  "name": "Rajgir",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.02157,
+  "lon": 85.39602,
+  "district": "Nalanda",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2115,
+   2650
+  ]
+ },
+ {
+  "id": 156,
+  "name": "Nawada BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 24.94847,
+  "lon": 85.53177,
+  "district": "Nawada",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   2245,
+   2720
+  ]
+ },
+ {
+  "id": 157,
+  "name": "Bakhri",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.56271,
+  "lon": 86.24171,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2925,
+   2132
+  ]
+ },
+ {
+  "id": 158,
+  "name": "Khagaria TSS",
+  "kv": "TSS",
+  "status": "Existing",
+  "owner": "Railways",
+  "lat": 25.57003,
+  "lon": 86.36179,
+  "district": "Khagaria",
+  "discom": "NBPDCL",
+  "note": "Railway traction sub-station",
+  "px": [
+   3040,
+   2125
+  ]
+ },
+ {
+  "id": 159,
+  "name": "Khagaria",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.51469,
+  "lon": 86.485,
+  "district": "Khagaria",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   3158,
+   2178
+  ]
+ },
+ {
+  "id": 160,
+  "name": "Balia",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.43111,
+  "lon": 86.3096,
+  "district": "Begusarai",
+  "discom": "NBPDCL",
+  "note": "",
+  "px": [
+   2990,
+   2258
+  ]
+ },
+ {
+  "id": 161,
+  "name": "Khagaria (New)",
+  "kv": "220",
+  "status": "Proposed",
+  "owner": "BSPTCL",
+  "lat": 25.40086,
+  "lon": 86.67818,
+  "district": "Khagaria",
+  "discom": "NBPDCL",
+  "note": "220/132/33 kV",
+  "px": [
+   3343,
+   2287
+  ]
+ },
+ {
+  "id": 162,
+  "name": "Jamalpur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.36115,
+  "lon": 86.49546,
+  "district": "Munger",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3168,
+   2325
+  ]
+ },
+ {
+  "id": 163,
+  "name": "Jamalpur BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 25.3037,
+  "lon": 86.45579,
+  "district": "Munger",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   3130,
+   2380
+  ]
+ },
+ {
+  "id": 164,
+  "name": "Sultanganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.23584,
+  "lon": 86.7325,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3395,
+   2445
+  ]
+ },
+ {
+  "id": 165,
+  "name": "Sabour BGCL",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BGCL",
+  "lat": 25.25467,
+  "lon": 86.97264,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   3625,
+   2427
+  ]
+ },
+ {
+  "id": 166,
+  "name": "Sabour",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.23588,
+  "lon": 87.0353,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3685,
+   2445
+  ]
+ },
+ {
+  "id": 167,
+  "name": "Tarapur",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.13974,
+  "lon": 86.66464,
+  "district": "Munger",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3330,
+   2537
+  ]
+ },
+ {
+  "id": 168,
+  "name": "Nathnagar (New)",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 25.13978,
+  "lon": 87.01964,
+  "district": "Bhagalpur",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   3670,
+   2537
+  ]
+ },
+ {
+  "id": 169,
+  "name": "Jamui",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.96736,
+  "lon": 86.24909,
+  "district": "Jamui",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2932,
+   2702
+  ]
+ },
+ {
+  "id": 170,
+  "name": "Banka (PG)",
+  "kv": "400",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 24.93818,
+  "lon": 86.86305,
+  "district": "Banka",
+  "discom": "SBPDCL",
+  "note": "400/132 kV",
+  "px": [
+   3520,
+   2730
+  ]
+ },
+ {
+  "id": 171,
+  "name": "Banka",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.89119,
+  "lon": 86.93092,
+  "district": "Banka",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   3585,
+   2775
+  ]
+ },
+ {
+  "id": 172,
+  "name": "Kerpa",
+  "kv": "132",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 24.79685,
+  "lon": 84.01257,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   790,
+   2865
+  ]
+ },
+ {
+  "id": 173,
+  "name": "Banjari",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.66838,
+  "lon": 83.98126,
+  "district": "Rohtas",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   760,
+   2988
+  ]
+ },
+ {
+  "id": 174,
+  "name": "Nabinagar-I (BRBCL)",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "NTPC-Railways",
+  "lat": 24.59319,
+  "lon": 84.13267,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "Nabinagar TPP (BRBCL)",
+  "px": [
+   905,
+   3060
+  ]
+ },
+ {
+  "id": 175,
+  "name": "Bangur Cement (Sri Cement)",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "Consumer",
+  "lat": 24.69244,
+  "lon": 84.33626,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "Bulk consumer sub-station",
+  "px": [
+   1100,
+   2965
+  ]
+ },
+ {
+  "id": 176,
+  "name": "Aurangabad",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.77913,
+  "lon": 84.34461,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1108,
+   2882
+  ]
+ },
+ {
+  "id": 177,
+  "name": "Rafiganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.80736,
+  "lon": 84.61817,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1370,
+   2855
+  ]
+ },
+ {
+  "id": 178,
+  "name": "Nabinagar-II (NPGC)",
+  "kv": "Thermal",
+  "status": "Existing",
+  "owner": "NTPC",
+  "lat": 24.588,
+  "lon": 84.41459,
+  "district": "Aurangabad",
+  "discom": "SBPDCL",
+  "note": "Nabinagar STPP",
+  "px": [
+   1175,
+   3065
+  ]
+ },
+ {
+  "id": 179,
+  "name": "Chandauti (New)",
+  "kv": "400",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 24.66115,
+  "lon": 84.75914,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "400/220/132 kV",
+  "px": [
+   1505,
+   2995
+  ]
+ },
+ {
+  "id": 180,
+  "name": "Chandauti",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.68727,
+  "lon": 84.84267,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1585,
+   2970
+  ]
+ },
+ {
+  "id": 181,
+  "name": "Gaya (PG)",
+  "kv": "765",
+  "status": "Existing",
+  "owner": "PGCIL",
+  "lat": 24.81263,
+  "lon": 84.99928,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "765/400/220 kV",
+  "px": [
+   1735,
+   2850
+  ]
+ },
+ {
+  "id": 182,
+  "name": "Bodhgaya",
+  "kv": "220",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.70296,
+  "lon": 84.96274,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "220/132 kV",
+  "px": [
+   1700,
+   2955
+  ]
+ },
+ {
+  "id": 183,
+  "name": "Sherghati",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.56715,
+  "lon": 84.80092,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1545,
+   3085
+  ]
+ },
+ {
+  "id": 184,
+  "name": "Imamganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.45746,
+  "lon": 84.57644,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1330,
+   3190
+  ]
+ },
+ {
+  "id": 185,
+  "name": "Nawada",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.87536,
+  "lon": 85.52447,
+  "district": "Nawada",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   2238,
+   2790
+  ]
+ },
+ {
+  "id": 186,
+  "name": "Wazirganj",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.79699,
+  "lon": 85.24465,
+  "district": "Gaya",
+  "discom": "SBPDCL",
+  "note": "",
+  "px": [
+   1970,
+   2865
+  ]
+ },
+ {
+  "id": 187,
+  "name": "Warsaliganj",
+  "kv": "132",
+  "status": "UC",
+  "owner": "BSPTCL",
+  "lat": 24.73436,
+  "lon": 85.54955,
+  "district": "Nawada",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   2262,
+   2925
+  ]
+ },
+ {
+  "id": 188,
+  "name": "Jamui (New)",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.77935,
+  "lon": 86.22823,
+  "district": "Jamui",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   2912,
+   2882
+  ]
+ },
+ {
+  "id": 189,
+  "name": "Banka (New)",
+  "kv": "132",
+  "status": "Existing",
+  "owner": "BSPTCL",
+  "lat": 24.79715,
+  "lon": 86.65946,
+  "district": "Banka",
+  "discom": "SBPDCL",
+  "note": "132/33 kV",
+  "px": [
+   3325,
+   2865
+  ]
+ }
+]

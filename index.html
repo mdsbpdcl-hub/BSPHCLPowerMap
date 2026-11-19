@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bihar Power Map – Interactive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(images/layers-2x.png);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(images/marker-icon.png);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+</style>
+<style>
+:root{
+  --t1:#f0752f;--t2:#f7a531;--t1a:rgba(240,117,47,.16);--t2a:rgba(247,165,49,.14);--t1s:rgba(240,117,47,.09);
+  --ink:#1d2433;--muted:#667085;--faint:#98a2b3;--line:#e7eaf0;--track:#eef0f5;
+  --sb:#2a78d6;--nb:#eb6834;
+  --g-t:#1a8a4c;--g-m:#22a35a;--g-b:#eaf8f0;--a-t:#9a6400;--a-m:#e3a21a;--a-b:#fff7e4;--r-t:#b8352b;--r-m:#df4b3f;--r-b:#fff0ee;
+  --k765:#7a4828;--k400:#dc2626;--k220:#16a34a;--k132:#2563c8;
+  --m1:#5b6ee1;--m2:#a25ad9;--m3:#0f9f8f;--m4:#d4537e;
+  --sh:0 1px 2px rgba(29,36,51,.04),0 10px 28px -14px rgba(29,36,51,.22);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Outfit","Segoe UI",system-ui,sans-serif;color:var(--ink);background:#f5f6fa;
+  background-image:radial-gradient(900px 600px at 0% 0%,var(--t1s),transparent 70%),radial-gradient(800px 600px at 100% 10%,var(--t2a),transparent 70%),radial-gradient(900px 700px at 50% 100%,var(--t1s),transparent 70%);
+  background-attachment:fixed;font-size:15px;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:1200;background:rgba(255,255,255,.72);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid rgba(231,234,240,.8)}
+.hrow{display:flex;align-items:center;gap:14px;padding:12px 0;flex-wrap:wrap}
+.badge{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--t1),var(--t2));display:grid;place-items:center;flex:none;box-shadow:0 6px 16px -6px var(--t1)}
+.ttl{min-width:0;flex:1 1 220px}
+.ttl h1{font-size:19px;margin:0;font-weight:700;letter-spacing:-.01em}
+.ttl .sub{font-size:13px;color:var(--muted)}
+.pills{display:inline-flex;background:var(--track);border-radius:99px;padding:4px;gap:2px;flex-wrap:wrap}
+.pills button{border:0;background:transparent;border-radius:99px;padding:6px 14px;cursor:pointer;font-weight:500;color:var(--muted)}
+.pills button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(29,36,51,.15)}
+.dots{display:flex;gap:8px}
+.dot{width:22px;height:22px;border-radius:50%;border:0;cursor:pointer;padding:0;outline:2px solid transparent;outline-offset:2px}
+.dot.on{outline-color:var(--ink)}
+.btn{border:0;border-radius:11px;padding:9px 14px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.btn.pri{background:linear-gradient(135deg,var(--t1),var(--t2));color:#fff}
+.btn.sec{background:#fff;border:1px solid var(--line)}
+.btn:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--t1);outline-offset:2px}
+main{padding:22px 0 60px}
+section{margin-bottom:26px}
+h2{font-size:17px;margin:0 0 12px;font-weight:600}
+.card{background:#fff;border-radius:18px;box-shadow:var(--sh);padding:18px;min-width:0}
+.grid{display:grid;gap:16px}
+.hero{grid-template-columns:minmax(0,1.1fr) minmax(0,2fr)}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpi{border-radius:18px;padding:16px;box-shadow:var(--sh);min-width:0;display:flex;flex-direction:column;gap:6px}
+.kpi .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff}
+.kpi .lab{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.kpi .big{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.kpi .line{font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:99px;padding:3px 9px;width:max-content;max-width:100%}
+.vdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.facts{grid-template-columns:repeat(6,minmax(0,1fr))}
+.fact{background:#fff;border-radius:12px;box-shadow:var(--sh);padding:12px 14px;display:flex;gap:10px;align-items:center;min-width:0}
+.fact .fi{width:34px;height:34px;border-radius:10px;background:var(--t1a);color:var(--t1);display:grid;place-items:center;flex:none}
+.fact .fl{font-size:12px;color:var(--muted)}
+.fact .fv{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dial{display:flex;flex-direction:column;align-items:center;text-align:center}
+.dial .bign{font-size:38px;font-weight:700;margin-top:-6px}
+.dial .cap{color:var(--muted);font-size:13px;max-width:320px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.chip{font-size:12px;border-radius:99px;padding:3px 10px;font-weight:600;background:var(--track);color:var(--muted);white-space:nowrap}
+.chip.sb{background:rgba(42,120,214,.12);color:var(--sb)}.chip.nb{background:rgba(235,104,52,.13);color:#c4521f}
+.chip.good{background:var(--g-b);color:var(--g-t)}.chip.watch{background:var(--a-b);color:var(--a-t)}.chip.weak{background:var(--r-b);color:var(--r-t)}
+.chip.t{background:var(--t1a);color:var(--t1)}
+/* map */
+.mapcard{padding:0;overflow:hidden;display:grid;grid-template-columns:280px minmax(0,1fr)}
+.mside{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px;max-height:680px;overflow:auto}
+.mside h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin:0 0 6px;font-weight:600}
+.tog{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;font-size:14px}
+.tog input{accent-color:var(--t1);width:16px;height:16px}
+.lsw{width:22px;height:4px;border-radius:2px;flex:none}
+#map{height:680px;background:#f3f5f9}
+.mside select,.mside input[type=search]{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.legend{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.ramp{height:8px;border-radius:99px}
+.leaflet-container{font-family:inherit}
+.leaflet-popup-content-wrapper{border-radius:14px;box-shadow:var(--sh)}
+.leaflet-popup-content{margin:12px 14px;font-size:13px;line-height:1.5}
+.pp h4{margin:0 0 4px;font-size:15px}
+.pp .r{color:var(--muted)}
+.pp a{color:var(--t1);font-weight:600;cursor:pointer;text-decoration:none}
+.dlab{background:transparent;border:0;box-shadow:none;font-size:11px;font-weight:600;color:#7c5a8f;text-transform:uppercase;letter-spacing:.04em;text-shadow:0 0 3px #fff,0 0 3px #fff}
+.dlab:before{display:none}
+.slab{background:rgba(255,255,255,.85);border:0;box-shadow:none;font-size:11px;padding:0 4px;border-radius:4px;color:var(--ink)}
+.slab:before{display:none}
+/* groups */
+.groups{grid-template-columns:repeat(2,minmax(0,1fr))}
+.gcard{position:relative;padding-left:24px;cursor:pointer;transition:transform .15s,box-shadow .15s;display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;align-items:center}
+.gcard:hover{transform:translateY(-2px)}
+.gcard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;border-radius:18px 0 0 18px;background:var(--gc)}
+.gcard h3{margin:0 0 8px;font-size:17px}
+.bar{height:7px;background:var(--track);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px;width:0;transition:width .8s ease}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) auto;font-size:13px;margin-top:8px;gap:2px 8px}
+.brow .bar{grid-column:1/-1}
+.foot{font-size:12px;color:var(--muted);margin-top:10px}
+.glance{grid-template-columns:repeat(3,minmax(0,1fr))}
+.donut{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.lg{display:flex;flex-direction:column;gap:6px;font-size:13px;min-width:0;flex:1}
+.lg div{display:flex;align-items:center;gap:8px}
+.lg b{margin-left:auto;font-weight:600}
+/* district tiles */
+.bands{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.bands button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;cursor:pointer;font-weight:500;font-size:13px}
+.bands button.on{border-color:var(--t1);background:var(--t1a);color:var(--ink)}
+.bands .sp{flex:1}
+.bands select{border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:#fff;font-size:13px}
+.tiles{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.tile{border-radius:16px;padding:14px;box-shadow:var(--sh);cursor:pointer;border:1px solid var(--line);transition:transform .15s;min-width:0}
+.tile:hover{transform:translateY(-2px)}
+.tile.good{background:linear-gradient(160deg,#fff 40%,var(--g-b));border-color:#cdebd9}
+.tile.watch{background:linear-gradient(160deg,#fff 40%,var(--a-b));border-color:#f3e2b6}
+.tile.weak{background:linear-gradient(160deg,#fff 40%,var(--r-b));border-color:#f4cfca}
+.th{display:flex;gap:10px;align-items:center}
+.rk{width:26px;height:26px;border-radius:50%;background:var(--track);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.tn{font-weight:600;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm{display:flex;gap:12px;align-items:center;margin-top:10px}
+.tm .ring{flex:none}
+.tstat{flex:1;min-width:0;font-size:12px;color:var(--muted)}
+.tstat .brow{margin-top:4px}
+.vmix{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.vmix span{font-size:11px;border-radius:6px;padding:1px 6px;font-weight:600;color:#fff}
+/* rankings */
+.ranks{grid-template-columns:repeat(4,minmax(0,1fr))}
+.rrow{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.rrow:last-child{border-bottom:0}
+.rrow .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.top .n{background:var(--g-b);color:var(--g-t)}.bot .n{background:var(--r-b);color:var(--r-t)}
+.rrow .nm{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrow .nm small{color:var(--faint);margin-left:4px}
+.rrow .v{font-weight:600;font-size:14px}
+.rrow .bar{grid-column:2/-1;height:5px}
+/* table */
+.tbox{overflow:auto;border:1px solid var(--line);border-radius:12px;max-height:520px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{position:sticky;top:0;background:#f8f9fc;cursor:pointer;user-select:none;font-weight:600;color:var(--muted);z-index:1}
+th.s:after{content:" ▲";font-size:10px}th.s.d:after{content:" ▼"}
+tbody tr:hover{background:var(--t1s)}
+td.num,th.num{text-align:right}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tools input,.tools select{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.tools input{flex:1 1 200px;min-width:0}
+.stat{font-size:12px;font-weight:600;border-radius:99px;padding:2px 8px}
+.stat.Existing{background:var(--g-b);color:var(--g-t)}.stat.UC{background:var(--a-b);color:var(--a-t)}.stat.Proposed{background:#eef0fd;color:#4252b8}
+.kvt{font-weight:700}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(29,36,51,.25);backdrop-filter:blur(3px);z-index:2000;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,100vw);background:#f7f8fb;z-index:2001;transform:translateX(100%);transition:transform .25s ease;overflow:auto;box-shadow:-20px 0 50px -20px rgba(29,36,51,.35)}
+.drawer.on{transform:none}
+.dh{position:sticky;top:0;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;z-index:2;flex-wrap:wrap}
+.dh h2{margin:0;flex:1;min-width:120px}
+.ib{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;display:grid;place-items:center}
+.db{padding:18px;display:flex;flex-direction:column;gap:14px}
+.dk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dk .fact{flex-direction:column;align-items:flex-start;gap:2px}
+.flags{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.flags li{background:#fff;border-left:4px solid var(--a-m);border-radius:8px;padding:8px 12px;font-size:13px}
+.flags li.ok{border-left-color:var(--g-m)}
+.note{background:#fff;border-left:4px solid var(--t1);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted)}
+details.about summary{cursor:pointer;font-weight:600}
+details.about p,details.about li{font-size:13.5px;color:var(--muted)}
+.state{display:grid;place-items:center;min-height:50vh}
+.state .card{text-align:center;max-width:360px}
+.spin{width:34px;height:34px;border:3px solid var(--track);border-top-color:var(--t1);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 10px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hide{display:none!important}
+@media (max-width:1100px){.facts{grid-template-columns:repeat(3,minmax(0,1fr))}.ranks{grid-template-columns:repeat(2,minmax(0,1fr))}.glance{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}.mapcard{grid-template-columns:minmax(0,1fr)}.mside{border-right:0;border-bottom:1px solid var(--line);max-height:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#map{height:520px;order:-1}.groups{grid-template-columns:minmax(0,1fr)}.glance{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.wrap{padding:0 16px}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.ranks{grid-template-columns:minmax(0,1fr)}.mside{grid-template-columns:minmax(0,1fr)}.btn.pri span{display:none}.gcard{grid-template-columns:minmax(0,1fr)}.dk{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .big{font-size:26px}.hrow{gap:10px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="wrap hrow">
+  <div class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+  <div class="ttl"><h1>Bihar Power Map</h1><div class="sub" id="asOn">As on Aug 2020 · BSPHCL transmission map</div></div>
+  <div class="pills" id="scope"><button data-s="Bihar" class="on">Bihar</button><button data-s="SBPDCL">SBPDCL</button><button data-s="NBPDCL">NBPDCL</button></div>
+  <div class="dots" id="dots"></div>
+  <button class="btn pri" id="refresh" title="Refresh"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg><span>Refresh</span></button>
+ </div>
+</header>
+
+<div class="wrap">
+ <div id="st-load" class="state"><div class="card"><div class="spin"></div>Loading</div></div>
+ <div id="st-err" class="state hide"><div class="card"><h2>Could not load the data</h2><p class="foot">Please try again in a moment.</p><button class="btn pri" onclick="boot()">Try again</button></div></div>
+ <main id="app" class="hide">
+  <section class="grid hero">
+   <div class="card dial">
+    <svg id="dialSvg" viewBox="0 0 240 140" width="100%" style="max-width:300px"></svg>
+    <div class="bign" id="dialNum">0%</div>
+    <div class="cap">of the area is within 20 km of an existing grid sub-station (132 kV and above)</div>
+    <div class="chips" id="dialChips"></div>
+   </div>
+   <div class="grid kpis" id="kpis"></div>
+  </section>
+
+  <section class="grid facts" id="facts"></section>
+
+  <section>
+   <h2>Interactive map</h2>
+   <div class="card mapcard">
+    <div class="mside">
+     <div><h3>Find a sub-station</h3><input type="search" id="find" list="names" placeholder="Type a name…"><datalist id="names"></datalist></div>
+     <div><h3>Lines</h3>
+      <label class="tog"><input type="checkbox" data-l="l765" checked><span class="lsw" style="background:var(--k765)"></span>765 kV</label>
+      <label class="tog"><input type="checkbox" data-l="l400" checked><span class="lsw" style="background:var(--k400)"></span>400 kV</label>
+      <label class="tog"><input type="checkbox" data-l="l220" checked><span class="lsw" style="background:var(--k220)"></span>220 kV</label>
+      <label class="tog"><input type="checkbox" data-l="l132" checked><span class="lsw" style="background:var(--k132)"></span>132 kV</label>
+     </div>
+     <div><h3>Points</h3>
+      <label class="tog"><input type="checkbox" id="tSS" checked>Sub-stations</label>
+      <label class="tog"><input type="checkbox" id="tUC" checked>Under construction / proposed</label>
+      <label class="tog"><input type="checkbox" id="tGen" checked>Generating stations &amp; others</label>
+      <label class="tog"><input type="checkbox" id="tLab">Show names</label>
+      <label class="tog"><input type="checkbox" id="tRing">20 km reach of each sub-station</label>
+      <label class="tog"><input type="checkbox" id="tOrig">Original BSPHCL map</label>
+      <label class="tog hide" id="tStreetW"><input type="checkbox" id="tStreet">Street map underlay</label>
+     </div>
+     <div><h3>Shade districts by</h3>
+      <select id="shade">
+       <option value="band">Overall status</option>
+       <option value="cov20">Area within 20 km (%)</option>
+       <option value="gss_existing">Grid sub-stations (existing)</option>
+       <option value="pop_lakh_per_gss">People per sub-station (lakh)</option>
+       <option value="discom">DISCOM</option>
+       <option value="none">No shading</option>
+      </select>
+      <div class="legend" id="legend" style="margin-top:8px"></div>
+     </div>
+     <div class="legend">
+      <div><span class="vdot" style="background:var(--k400)"></span> filled = existing · <span class="vdot" style="background:#fff;border:2px dashed var(--k400)"></span> dashed = under construction · ▲ proposed</div>
+     </div>
+    </div>
+    <div id="map"></div>
+   </div>
+  </section>
+
+  <section>
+   <h2>By DISCOM</h2>
+   <div class="grid groups" id="groups"></div>
+  </section>
+
+  <section>
+   <h2>At a glance</h2>
+   <div class="grid glance" id="glance"></div>
+  </section>
+
+  <section>
+   <h2>District status</h2>
+   <div class="bands" id="bands"></div>
+   <div class="grid tiles" id="tiles"></div>
+  </section>
+
+  <section>
+   <h2>Rankings</h2>
+   <div class="grid ranks" id="ranks"></div>
+  </section>
+
+  <section>
+   <h2>Sub-station register</h2>
+   <div class="card">
+    <div class="tools">
+     <input type="search" id="q" placeholder="Search name, district, owner…">
+     <select id="fkv"><option value="">All voltages</option><option>765</option><option>400</option><option>220</option><option>132</option><option>Thermal</option><option>Hydro</option><option>HVDC</option><option>TSS</option></select>
+     <select id="fst"><option value="">All status</option><option>Existing</option><option>UC</option><option>Proposed</option></select>
+     <button class="btn sec" id="copy">Copy as CSV</button>
+    </div>
+    <div class="tbox"><table id="reg"><thead></thead><tbody></tbody></table></div>
+    <div class="foot" id="regCount"></div>
+   </div>
+  </section>
+
+  <section>
+   <details class="card about">
+    <summary>About these figures</summary>
+    <ul>
+     <li>Every sub-station, its voltage and its status (existing, under construction, proposed) is read from the BSPHCL “Comprehensive Bihar Map” (13th Plan edition, revised August 2020). Projects shown as under construction then may have been commissioned since; update the data file to bring them current.</li>
+     <li>The map is partly schematic. Points sit where the map draws them, so positions are approximate (within 1–3 km) and a few close to a district border may fall on the wrong side; these were checked and corrected by name.</li>
+     <li>Lines are traced from the colours of the original map and laid over a matched district boundary layer.</li>
+     <li><b>Area within 20 km</b>: share of the district's area that lies within 20 km (straight line) of an existing grid sub-station of 132 kV or above. It is a simple guide to how long 33 kV feeders need to be.</li>
+     <li><b>People per sub-station</b>: Census 2011 population divided by existing grid sub-stations in the district.</li>
+     <li><b>Overall status</b> is an indicative score out of 100: area within 20 km (up to 45), presence of a 220 kV or higher sub-station in the district (25), and people per sub-station (up to 30). Good 70 and above, Watch 50–69, Weak below 50.</li>
+    </ul>
+   </details>
+  </section>
+ </main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+ <div class="dh">
+  <button class="ib" id="dClose" title="Close">✕</button>
+  <h2 id="dName"></h2>
+  <span id="dChips" class="chips" style="margin:0"></span>
+  <button class="ib" id="dPrev" title="Previous">‹</button><button class="ib" id="dNext" title="Next">›</button>
+ </div>
+ <div class="db" id="dBody"></div>
+</aside>
+
+<script src="lib/leaflet.js"></script>
+<script>
+"use strict";
+const NF=new Intl.NumberFormat('en-IN');
+const fmt=n=>n==null?'–':NF.format(Math.round(n));
+const f1=n=>n==null?'–':(Math.round(n*10)/10).toLocaleString('en-IN',{minimumFractionDigits:1,maximumFractionDigits:1});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KVC={'765':'#7a4828','400':'#dc2626','220':'#16a34a','132':'#2563c8',Thermal:'#334155',Hydro:'#0e7490',HVDC:'#7e3fa8',TSS:'#c0267a'};
+const GRID=['765','400','220','132'];
+const THEMES={Sky:['#2f7df6','#22c1dc'],Mint:['#0a9b85','#4eb068'],Sunrise:['#f0752f','#f7a531'],Lavender:['#7a65c2','#e27aab']};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let S=[],D=[],GEO=null,BOUNDS=null,scope='Bihar',band='All',sortKey='score',map,L_={},distLayer,ssLayer,labLayer,ringLayer,origLayer,streetLayer,lineLayers={},curDist=null,distOrder=[];
+
+function hexA(h,a){const n=parseInt(h.slice(1),16);return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`}
+function setTheme(name){const t=THEMES[name]||THEMES.Sunrise;const r=document.documentElement.style;
+ r.setProperty('--t1',t[0]);r.setProperty('--t2',t[1]);r.setProperty('--t1a',hexA(t[0],.16));r.setProperty('--t2a',hexA(t[1],.14));r.setProperty('--t1s',hexA(t[0],.09));
+ document.querySelectorAll('.dot').forEach(d=>d.classList.toggle('on',d.dataset.t===name));
+ try{localStorage.setItem('bihar-power-map-theme',name)}catch(e){}}
+(function(){const w=$('#dots');for(const [k,v] of Object.entries(THEMES)){const b=document.createElement('button');b.className='dot';b.dataset.t=k;b.title=k;b.style.background=`linear-gradient(135deg,${v[0]},${v[1]})`;b.onclick=()=>setTheme(k);w.appendChild(b)}
+ let t='Sunrise';try{t=localStorage.getItem('bihar-power-map-theme')||'Sunrise'}catch(e){}setTheme(t)})();
+
+async function boot(){
+ $('#st-load').classList.remove('hide');$('#st-err').classList.add('hide');$('#app').classList.add('hide');
+ try{
+  const g=u=>fetch(u+'?v='+Date.now()).then(r=>{if(!r.ok)throw 0;return r.json()});
+  [S,D,GEO,BOUNDS]=await Promise.all([g('data/substations.json'),g('data/district_stats.json'),g('data/districts.geojson'),g('data/overlay_bounds.json')]);
+  if(!S.length)throw 0;
+ }catch(e){$('#st-load').classList.add('hide');$('#st-err').classList.remove('hide');return}
+ $('#st-load').classList.add('hide');$('#app').classList.remove('hide');
+ if(!map)initMap();
+ renderAll();
+}
+const inScope=x=>scope==='Bihar'||x.discom===scope;
+const isGrid=s=>GRID.includes(s.kv);
+
+function agg(ds){
+ const a=ds.reduce((o,d)=>{o.area+=d.area_km2;o.pop+=d.population_2011||0;o.cov+=d.cov20*d.area_km2;o.covp+=d.cov20_planned*d.area_km2;o.mean+=d.mean_dist_km*d.area_km2;return o},{area:0,pop:0,cov:0,covp:0,mean:0});
+ a.cov/=a.area;a.covp/=a.area;a.mean/=a.area;return a}
+
+function renderAll(){renderTop();renderGroups();renderGlance();renderBands();renderTiles();renderRanks();renderReg();refreshMap()}
+
+/* ---------- dial ---------- */
+function dial(svg,val,small){
+ const R=small?50:96,cx=small?60:120,cy=small?62:120,w=small?10:16;
+ const pt=(p,r)=>{const a=Math.PI*(1-p);return[cx+r*Math.cos(a),cy-r*Math.sin(a)]};
+ const arc=p=>{const[x1,y1]=pt(0,R),[x2,y2]=pt(Math.max(.0001,p),R);return`M${x1},${y1} A${R},${R} 0 0 1 ${x2},${y2}`};
+ const id='g'+Math.random().toString(36).slice(2,7);
+ let s=`<defs><linearGradient id="${id}"><stop offset="0" style="stop-color:var(--t1)"/><stop offset="1" style="stop-color:var(--t2)"/></linearGradient></defs>`;
+ s+=`<path d="${arc(1)}" stroke="#eef0f5" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+ s+=`<path class="va" d="${arc(val/100)}" stroke="url(#${id})" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+ if(!small){for(const p of[0,25,50,75,100]){const[a,b]=pt(p/100,R+12),[c,d]=pt(p/100,R+18);s+=`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#c5cad6" stroke-width="2"/>`;const[tx,ty]=pt(p/100,R-28);s+=`<text x="${tx}" y="${ty+4}" font-size="10" text-anchor="middle" fill="#98a2b3">${p}</text>`}}
+ const ang=-90+180*val/100;
+ s+=`<g style="transform-origin:${cx}px ${cy}px;transform:rotate(${RM?ang:-90}deg);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)" class="nd"><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy-R+(small?6:14)}" stroke="#1d2433" stroke-width="${small?2.5:3.5}" stroke-linecap="round"/></g><circle cx="${cx}" cy="${cy}" r="${small?5:8}" fill="#1d2433"/>`;
+ svg.innerHTML=s;requestAnimationFrame(()=>requestAnimationFrame(()=>{const n=svg.querySelector('.nd');if(n)n.style.transform=`rotate(${ang}deg)`}));
+}
+function countUp(el,to,fmtf=fmt,suf=''){if(RM){el.textContent=fmtf(to)+suf;return}const t0=performance.now(),d=900;const step=t=>{const p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);el.textContent=fmtf(to*e)+suf;if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+
+const ICO={
+ bolt:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+ tower:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 7 22M12 2l5 20M8.5 15h7M9.8 9h4.4M4 6h16"/></svg>',
+ sub:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V4M16 7V4M7 13h10"/></svg>',
+ plant:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V11l5 3V11l5 3V5h4l1 16z"/></svg>',
+ map:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
+ people:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.4 3.4 0 0 1 0 6.4M18 14.6c2 .6 3.2 2.4 3.6 5.4"/></svg>',
+ ruler:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 17 14-14 4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></svg>',
+ pin:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7.2 7-12a7 7 0 0 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+};
+
+function renderTop(){
+ const ds=D.filter(inScope),ss=S.filter(inScope),a=agg(ds);
+ dial($('#dialSvg'),a.cov);countUp($('#dialNum'),a.cov,f1,'%');
+ $('#dialChips').innerHTML=`<span class="chip t">${f1(a.covp)}% once projects on the map are complete</span><span class="chip">${ds.length} districts</span>`;
+ const g=ss.filter(isGrid),ex=g.filter(s=>s.status==='Existing'),pl=g.filter(s=>s.status!=='Existing');
+ const c=(kvs,st)=>g.filter(s=>kvs.includes(s.kv)&&(st?s.status==='Existing':s.status!=='Existing')).length;
+ const K=[
+  {l:'Grid sub-stations',dot:null,v:ex.length,line:'132 kV and above, in service',p:pl.length,col:'--m1',tint:'#eef0fd',ic:ICO.sub},
+  {l:'765 & 400 kV',dot:'#dc2626',v:c(['765','400'],1),line:`${c(['765'],1)} at 765 kV · rest 400 kV`,p:c(['765','400'],0),col:'--m2',tint:'#f6eefc',ic:ICO.tower},
+  {l:'220 kV',dot:'#16a34a',v:c(['220'],1),line:'Mainly 220/132 kV',p:c(['220'],0),col:'--m3',tint:'#e5f6f3',ic:ICO.bolt},
+  {l:'132 kV',dot:'#2563c8',v:c(['132'],1),line:'132/33 kV, feeding DISCOM 33 kV',p:c(['132'],0),col:'--m4',tint:'#fbeef3',ic:ICO.sub}];
+ $('#kpis').innerHTML=K.map((k,i)=>`<div class="kpi" style="background:linear-gradient(160deg,#fff 35%,${k.tint})"><div style="display:flex;justify-content:space-between;align-items:center"><span class="lab">${k.dot?`<span class="vdot" style="background:${k.dot}"></span>`:''}${k.l}</span><span class="ic" style="background:var(${k.col})">${k.ic}</span></div><div class="big" id="k${i}">0</div><div class="line">${k.line}</div><span class="pill" style="background:#fff;color:var(${k.col});border:1px solid ${k.tint}">+${k.p} planned (under construction / proposed)</span></div>`).join('');
+ K.forEach((k,i)=>countUp($('#k'+i),k.v));
+ const gen=ss.filter(s=>['Thermal','Hydro'].includes(s.kv)).length;
+ const F=[[ICO.map,'Area',fmt(a.area)+' km²'],[ICO.people,'Population 2011',f1(a.pop/1e7)+' crore'],[ICO.people,'People per sub-station',f1(a.pop/1e5/Math.max(1,ex.length))+' lakh'],[ICO.ruler,'Average distance to nearest',f1(a.mean)+' km'],[ICO.plant,'Generating stations',gen],[ICO.pin,'Districts with no 220 kV+',ds.filter(d=>!d.has_ehv).length+' of '+ds.length]];
+ $('#facts').innerHTML=F.map(f=>`<div class="fact"><span class="fi">${f[0]}</span><div style="min-width:0"><div class="fl">${f[1]}</div><div class="fv">${f[2]}</div></div></div>`).join('');
+}
+
+function renderGroups(){
+ $('#groups').innerHTML=['SBPDCL','NBPDCL'].map(k=>{const ds=D.filter(d=>d.discom===k),a=agg(ds),g=S.filter(s=>s.discom===k&&isGrid(s));
+  const ex=g.filter(s=>s.status==='Existing').length,pl=g.length-ex,ehv=g.filter(s=>s.status==='Existing'&&s.kv!=='132').length,weak=ds.filter(d=>d.band==='Weak').length;
+  const max=Math.max(...['SBPDCL','NBPDCL'].map(z=>S.filter(s=>s.discom===z&&isGrid(s)).length));
+  return `<div class="card gcard" style="--gc:${k==='SBPDCL'?'var(--sb)':'var(--nb)'}" data-g="${k}"><div style="text-align:center"><svg class="gd" viewBox="0 0 120 70" width="120"></svg><div style="font-weight:700;font-size:20px;margin-top:-4px">${f1(a.cov)}%</div><div class="foot" style="margin:0">area within 20 km</div></div>
+  <div><h3>${k} <span class="chip ${k==='SBPDCL'?'sb':'nb'}">${ds.length} districts</span></h3>
+  <div class="brow"><span>Existing grid sub-stations</span><b>${ex}</b><div class="bar"><i style="--w:${ex/max*100}%;background:${k==='SBPDCL'?'var(--sb)':'var(--nb)'}"></i></div></div>
+  <div class="brow"><span>220 kV and above</span><b>${ehv}</b><div class="bar"><i style="--w:${ehv/max*100}%;background:${k==='SBPDCL'?'var(--sb)':'var(--nb)'}"></i></div></div>
+  <div class="brow"><span>Under construction / proposed</span><b>${pl}</b><div class="bar"><i style="--w:${pl/max*100}%;background:var(--faint)"></i></div></div>
+  <div class="foot">${f1(a.pop/1e5/Math.max(1,ex))} lakh people per sub-station · ${weak} district${weak===1?'':'s'} marked Weak · Click to focus</div></div></div>`}).join('');
+ document.querySelectorAll('.gcard').forEach(c=>{dial(c.querySelector('.gd'),agg(D.filter(d=>d.discom===c.dataset.g)).cov,true);c.onclick=()=>setScope(c.dataset.g)});
+ growBars('#groups');
+}
+function growBars(sel){requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll(sel+' .bar>i').forEach(i=>i.style.width=i.style.getPropertyValue('--w'))))}
+
+function donut(parts,total,label){
+ const R=52,C=2*Math.PI*R;let off=0,s='';const gap=parts.filter(p=>p.v>0).length>1?3:0;
+ parts.forEach(p=>{if(!p.v)return;const len=p.v/total*C;s+=`<circle r="${R}" cx="70" cy="70" fill="none" stroke="${p.c}" stroke-width="15" stroke-dasharray="${Math.max(0,len-gap)} ${C}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"><title>${esc(p.l)}: ${p.v}</title></circle>`;off+=len});
+ return `<div class="donut"><svg viewBox="0 0 140 140" width="140" height="140"><circle r="${R}" cx="70" cy="70" fill="none" stroke="#eef0f5" stroke-width="15"/>${s}<text x="70" y="70" text-anchor="middle" font-size="24" font-weight="700" fill="#1d2433">${total}</text><text x="70" y="88" text-anchor="middle" font-size="11" fill="#667085">${label}</text></svg>
+ <div class="lg">${parts.map(p=>`<div><span class="vdot" style="background:${p.c}"></span>${esc(p.l)}<b>${p.v} <span style="color:var(--faint);font-weight:500">${total?Math.round(p.v/total*100):0}%</span></b></div>`).join('')}</div></div>`}
+
+function renderGlance(){
+ const ss=S.filter(inScope),g=ss.filter(isGrid);
+ const kv=GRID.map(k=>({l:k+' kV',v:g.filter(s=>s.kv===k).length,c:KVC[k]}));
+ const own={};g.forEach(s=>{const o=['BSPTCL','PGCIL','BGCL'].includes(s.owner)?s.owner:'Others';own[s.owner==='PGCIL'?'PGCIL':o]=(own[s.owner==='PGCIL'?'PGCIL':o]||0)+1});
+ const oc={BSPTCL:'#5b6ee1',PGCIL:'#a25ad9',BGCL:'#0f9f8f',Others:'#a3abbb'};
+ const op=Object.keys(oc).map(k=>({l:k==='BGCL'?'BGCL (joint venture)':k,v:own[k]||0,c:oc[k]}));
+ const st=[{l:'Existing',v:g.filter(s=>s.status==='Existing').length,c:'#22a35a'},{l:'Under construction',v:g.filter(s=>s.status==='UC').length,c:'#e3a21a'},{l:'Proposed',v:g.filter(s=>s.status==='Proposed').length,c:'#5b6ee1'}];
+ $('#glance').innerHTML=`<div class="card"><h2 style="font-size:15px">Sub-stations by voltage</h2>${donut(kv,g.length,'all grid')}</div>
+ <div class="card"><h2 style="font-size:15px">Sub-stations by owner</h2>${donut(op,g.length,'all grid')}</div>
+ <div class="card"><h2 style="font-size:15px">Status on the map</h2>${donut(st,g.length,'all grid')}</div>`;
+}
+
+const BANDS=[['All','All'],['Good','Good'],['Watch','Watch'],['Weak','Weak']];
+function renderBands(){
+ const ds=D.filter(inScope);
+ $('#bands').innerHTML=BANDS.map(([k,l])=>`<button data-b="${k}" class="${band===k?'on':''}">${k!=='All'?`<span class="vdot" style="background:${k==='Good'?'var(--g-m)':k==='Watch'?'var(--a-m)':'var(--r-m)'}"></span> `:''}${l} · ${k==='All'?ds.length:ds.filter(d=>d.band===k).length}</button>`).join('')+
+ `<span class="sp"></span><select id="sortT"><option value="score">Sort: overall status</option><option value="cov20">Sort: area within 20 km</option><option value="gss_existing">Sort: sub-stations</option><option value="pop_lakh_per_gss">Sort: people per sub-station</option><option value="district">Sort: name</option></select>`;
+ $('#sortT').value=sortKey;$('#sortT').onchange=e=>{sortKey=e.target.value;renderTiles()};
+ document.querySelectorAll('#bands button').forEach(b=>b.onclick=()=>{band=b.dataset.b;renderBands();renderTiles()});
+}
+function ring(p,col,size=58){const R=size/2-5,C=2*Math.PI*R;return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${R}" fill="none" stroke="#eef0f5" stroke-width="6"/><circle cx="${size/2}" cy="${size/2}" r="${R}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C*p/100} ${C}" transform="rotate(-90 ${size/2} ${size/2})"/><text x="50%" y="54%" text-anchor="middle" font-size="13" font-weight="700" fill="#1d2433">${Math.round(p)}%</text></svg>`}
+const bandCls=b=>b==='Good'?'good':b==='Watch'?'watch':'weak';
+const bandCol=b=>b==='Good'?'#22a35a':b==='Watch'?'#e3a21a':'#df4b3f';
+function sorted(ds){const k=sortKey;return [...ds].sort((a,b)=>k==='district'?a.district.localeCompare(b.district):k==='pop_lakh_per_gss'?(b[k]||0)-(a[k]||0):(b[k]-a[k])||a.district.localeCompare(b.district))}
+function renderTiles(){
+ const all=D.filter(inScope),rankBy=[...all].sort((a,b)=>b.score-a.score);
+ const ds=sorted(all.filter(d=>band==='All'||d.band===band));distOrder=ds.map(d=>d.district);
+ const mx=Math.max(...D.map(d=>d.gss_existing));
+ $('#tiles').innerHTML=ds.map(d=>{const r=rankBy.indexOf(d)+1;
+  const mix=[['765',d.kv765],['400',d.kv400],['220',d.kv220],['132',d.kv132]].filter(x=>x[1]).map(x=>`<span style="background:${KVC[x[0]]}">${x[1]}×${x[0]}</span>`).join('')+(d.gss_planned?`<span style="background:#fff;color:var(--a-t);border:1px dashed var(--a-m)">+${d.gss_planned} planned</span>`:'');
+  return `<div class="tile ${bandCls(d.band)}" data-d="${esc(d.district)}"><div class="th"><span class="rk">${r}</span><span class="tn">${esc(d.district)}</span><span class="chip ${d.discom==='SBPDCL'?'sb':'nb'}">${d.discom}</span></div>
+  <div class="tm">${ring(d.cov20,bandCol(d.band))}<div class="tstat"><span class="chip ${bandCls(d.band)}">${d.band} · ${d.score}</span>
+  <div class="brow"><span>Grid sub-stations</span><b style="color:var(--ink)">${d.gss_existing}</b><div class="bar"><i style="--w:${d.gss_existing/mx*100}%;background:var(--t1)"></i></div></div>
+  <div style="margin-top:4px">${d.pop_lakh_per_gss!=null?f1(d.pop_lakh_per_gss)+' lakh people each':'–'} · nearest ${f1(d.mean_dist_km)} km avg</div></div></div>
+  <div class="vmix">${mix}</div></div>`}).join('')||'<div class="card">No districts in this group.</div>';
+ document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>openDist(t.dataset.d));growBars('#tiles');
+}
+
+function renderRanks(){
+ const ds=D.filter(inScope);
+ const list=(title,cls,arr,val,maxv,ctx)=>`<div class="card ${cls}"><h2 style="font-size:15px">${title}</h2>${arr.map((d,i)=>`<div class="rrow" data-d="${esc(d.district)}"><span class="n">${i+1}</span><span class="nm">${esc(d.district)}<small>${ctx(d)}</small></span><span class="v">${val(d)}</span><div class="bar"><i style="--w:${Math.min(100,parseFloat(val(d))/maxv*100)}%;background:${cls==='top'?'var(--g-m)':'var(--r-m)'}"></i></div></div>`).join('')}</div>`;
+ const big=ds.filter(d=>d.area_km2>800);
+ const byCov=[...ds].sort((a,b)=>b.cov20-a.cov20);
+ const byPop=[...big].filter(d=>d.pop_lakh_per_gss!=null).sort((a,b)=>b.pop_lakh_per_gss-a.pop_lakh_per_gss);
+ $('#ranks').innerHTML=
+  list('Best reach (area within 20 km)','top',byCov.slice(0,5),d=>d.cov20+'%',100,d=>d.discom)+
+  list('Weakest reach','bot',[...big].sort((a,b)=>a.cov20-b.cov20).slice(0,5),d=>d.cov20+'%',100,d=>f1(d.max_dist_km)+' km max')+
+  list('Fewest people per sub-station','top',[...byPop].reverse().slice(0,5),d=>f1(d.pop_lakh_per_gss)+' L',20,d=>d.gss_existing+' GSS')+
+  list('Most people per sub-station','bot',byPop.slice(0,5),d=>f1(d.pop_lakh_per_gss)+' L',20,d=>d.gss_existing+' GSS');
+ document.querySelectorAll('.rrow').forEach(r=>r.onclick=()=>openDist(r.dataset.d));growBars('#ranks');
+}
+
+/* ---------- register ---------- */
+const COLS=[['name','Name'],['kv','kV'],['status','Status'],['owner','Owner'],['district','District'],['discom','DISCOM'],['note','Details'],['lat','Lat','num'],['lon','Long','num']];
+let regSort=['district',1];
+function regRows(){const q=$('#q').value.trim().toLowerCase(),kv=$('#fkv').value,st=$('#fst').value;
+ return S.filter(inScope).filter(s=>(!kv||s.kv===kv)&&(!st||s.status===st)&&(!q||[s.name,s.district,s.owner,s.note,s.kv].join(' ').toLowerCase().includes(q)))
+ .sort((a,b)=>{const[k,d]=regSort;let x=a[k],y=b[k];if(k==='kv'){x=+x||0;y=+y||0}return (x>y?1:x<y?-1:a.name.localeCompare(b.name))*d})}
+function renderReg(){
+ $('#reg thead').innerHTML='<tr>'+COLS.map(([k,l,c])=>`<th data-k="${k}" class="${c||''} ${regSort[0]===k?'s'+(regSort[1]<0?' d':''):''}">${l}</th>`).join('')+'</tr>';
+ const rows=regRows();
+ $('#reg tbody').innerHTML=rows.map(s=>`<tr data-id="${s.id}"><td><b>${esc(s.name)}</b></td><td class="kvt" style="color:${KVC[s.kv]}">${s.kv}</td><td><span class="stat ${s.status}">${s.status==='UC'?'Under construction':s.status}</span></td><td>${esc(s.owner)}</td><td>${esc(s.district)}</td><td><span class="chip ${s.discom==='SBPDCL'?'sb':'nb'}">${s.discom}</span></td><td>${esc(s.note)}</td><td class="num">${s.lat.toFixed(3)}</td><td class="num">${s.lon.toFixed(3)}</td></tr>`).join('');
+ $('#regCount').textContent=`${rows.length} of ${S.filter(inScope).length} entries · click a row to see it on the map`;
+ document.querySelectorAll('#reg th').forEach(th=>th.onclick=()=>{regSort=[th.dataset.k,regSort[0]===th.dataset.k?-regSort[1]:1];renderReg()});
+ document.querySelectorAll('#reg tbody tr').forEach(tr=>tr.onclick=()=>flyTo(+tr.dataset.id));
+}
+['#q','#fkv','#fst'].forEach(s=>$(s).addEventListener('input',renderReg));
+$('#copy').onclick=async()=>{const rows=regRows(),h=['name','kv','status','owner','district','discom','note','lat','lon'];
+ const csv=[h.join(',')].concat(rows.map(r=>h.map(k=>`"${String(r[k]).replace(/"/g,'""')}"`).join(','))).join('\n');
+ try{await navigator.clipboard.writeText(csv);$('#copy').textContent='Copied ✓'}catch(e){$('#copy').textContent='Copy not allowed here'}setTimeout(()=>$('#copy').textContent='Copy as CSV',1800)};
+
+/* ---------- map ---------- */
+function initMap(){
+ map=L.map('map',{zoomSnap:.25,preferCanvas:false,attributionControl:true}).fitBounds([[24.28,83.32],[27.53,88.3]]);
+ map.attributionControl.setPrefix('');
+ map.createPane('dist').style.zIndex=300;map.createPane('lines').style.zIndex=350;map.createPane('rings').style.zIndex=360;
+ const b=[[BOUNDS.south,BOUNDS.west],[BOUNDS.north,BOUNDS.east]];
+ origLayer=L.imageOverlay('data/original_map.jpg',b,{opacity:.85,pane:'lines'});
+ for(const k of ['l132','l220','l400','l765'])lineLayers[k]=L.imageOverlay(`data/${k}.png`,b,{pane:'lines',opacity:.9}).addTo(map);
+ distLayer=L.geoJSON(GEO,{pane:'dist',style:distStyle,onEachFeature:(f,l)=>{
+   l.on('click',()=>openDist(f.properties.district));
+   l.on('mouseover',()=>l.setStyle({weight:2.5,color:'#7c5a8f'}));l.on('mouseout',()=>distLayer.resetStyle(l));
+   const d=D.find(x=>x.district===f.properties.district);
+   l.bindTooltip(`<b>${esc(f.properties.district)}</b><br>${d.gss_existing} grid sub-stations · ${d.cov20}% within 20 km<br>${d.band} (${d.score})`,{sticky:true})}}).addTo(map);
+ labLayer=L.layerGroup();
+ GEO.features.forEach(f=>{const c=L.geoJSON(f).getBounds().getCenter();L.tooltip({permanent:true,direction:'center',className:'dlab',interactive:false}).setLatLng(polyCenter(f)||c).setContent(f.properties.district).addTo(labLayer)});
+ labLayer.addTo(map);
+ ssLayer=L.layerGroup().addTo(map);ringLayer=L.layerGroup();
+ document.querySelectorAll('[data-l]').forEach(c=>c.onchange=()=>c.checked?lineLayers[c.dataset.l].addTo(map):map.removeLayer(lineLayers[c.dataset.l]));
+ ['#tSS','#tUC','#tGen','#tLab'].forEach(s=>$(s).onchange=drawPoints);
+ $('#tRing').onchange=()=>{$('#tRing').checked?ringLayer.addTo(map):map.removeLayer(ringLayer)};
+ $('#tOrig').onchange=()=>{$('#tOrig').checked?origLayer.addTo(map):map.removeLayer(origLayer)};
+ $('#shade').onchange=()=>{distLayer.setStyle(distStyle);legend()};
+ $('#find').onchange=()=>{const s=S.find(x=>(x.name+' · '+x.kv+' kV')===$('#find').value||x.name===$('#find').value);if(s)flyTo(s.id)};
+ $('#names').innerHTML=S.map(s=>`<option value="${esc(s.name+' · '+s.kv+' kV')}">`).join('');
+ // optional street underlay (only where outside images can load)
+ const probe=new Image();probe.onload=()=>{$('#tStreetW').classList.remove('hide')};probe.src='https://tile.openstreetmap.org/7/94/54.png';
+ streetLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap',opacity:.55});
+ $('#tStreet').onchange=()=>{$('#tStreet').checked?streetLayer.addTo(map):map.removeLayer(streetLayer)};
+ legend();
+}
+function polyCenter(f){// centroid of largest ring
+ let rings=f.geometry.type==='Polygon'?[f.geometry.coordinates[0]]:f.geometry.coordinates.map(p=>p[0]);
+ let best=null,ba=0;rings.forEach(r=>{let a=0,cx=0,cy=0;for(let i=0;i<r.length-1;i++){const k=r[i][0]*r[i+1][1]-r[i+1][0]*r[i][1];a+=k;cx+=(r[i][0]+r[i+1][0])*k;cy+=(r[i][1]+r[i+1][1])*k}if(Math.abs(a)>ba){ba=Math.abs(a);best=[cy/(3*a),cx/(3*a)]}});return best}
+const SEQ=['#eef1fc','#c9d1f6','#97a6ec','#6a7fe0','#4252b8'];
+function metricRange(k){const v=D.map(d=>d[k]).filter(x=>x!=null);return[Math.min(...v),Math.max(...v)]}
+function distStyle(f){
+ const d=D.find(x=>x.district===f.properties.district),k=$('#shade').value,dim=!inScope(d);
+ let fill='#ffffff',op=0;
+ if(k==='band'){fill=bandCol(d.band);op=.22}
+ else if(k==='discom'){fill=d.discom==='SBPDCL'?'#2a78d6':'#eb6834';op=.18}
+ else if(k!=='none'){const[a,b]=metricRange(k);let t=(d[k]-a)/((b-a)||1);fill=SEQ[Math.min(4,Math.floor(t*5))];op=.6}
+ return{color:'#9b7fb0',weight:1.2,fillColor:fill,fillOpacity:dim?0.03:op,opacity:dim?.35:.9}
+}
+function legend(){const k=$('#shade').value,el=$('#legend');
+ if(k==='band')el.innerHTML='<div><span class="vdot" style="background:var(--g-m)"></span> Good &nbsp;<span class="vdot" style="background:var(--a-m)"></span> Watch &nbsp;<span class="vdot" style="background:var(--r-m)"></span> Weak</div>';
+ else if(k==='discom')el.innerHTML='<div><span class="vdot" style="background:var(--sb)"></span> SBPDCL &nbsp;<span class="vdot" style="background:var(--nb)"></span> NBPDCL</div>';
+ else if(k==='none')el.innerHTML='';
+ else{const[a,b]=metricRange(k);el.innerHTML=`<div class="ramp" style="background:linear-gradient(90deg,${SEQ.join(',')})"></div><div style="display:flex;justify-content:space-between"><span>${f1(a)}</span><span>${f1(b)}</span></div>`}}
+function icon(s){
+ const c=KVC[s.kv]||'#555',sz={'765':22,'400':18,'220':15,'132':11}[s.kv]||14;
+ let html;
+ if(s.kv==='Thermal'||s.kv==='Hydro')html=`<div style="width:16px;height:16px;border:2px solid ${c};background:linear-gradient(#fff 50%,${c} 50%);border-radius:3px"></div>`;
+ else if(s.status==='Proposed')html=`<svg width="${sz+6}" height="${sz+6}" viewBox="0 0 20 20"><path d="M10 2 18 17H2z" fill="#fff" stroke="${c}" stroke-width="2.2" stroke-dasharray="3 2"/></svg>`;
+ else if(s.status==='UC')html=`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:#fff;border:2.5px dashed ${c}"></div>`;
+ else html=`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 0 1.5px ${c}"></div>`;
+ const w=sz+6;return L.divIcon({html,className:'',iconSize:[w,w],iconAnchor:[w/2,w/2]})}
+const markers={};
+function drawPoints(){
+ ssLayer.clearLayers();ringLayer.clearLayers();
+ const showSS=$('#tSS').checked,showUC=$('#tUC').checked,showGen=$('#tGen').checked,lab=$('#tLab').checked;
+ const order={'132':1,'220':2,'400':3,'765':4};
+ [...S].sort((a,b)=>(order[a.kv]||0)-(order[b.kv]||0)).forEach(s=>{
+  const grid=isGrid(s);
+  if(grid&&s.status==='Existing'&&!showSS)return;if(grid&&s.status!=='Existing'&&!showUC)return;if(!grid&&!showGen)return;
+  const m=L.marker([s.lat,s.lon],{icon:icon(s),opacity:inScope(s)?1:.3,zIndexOffset:(order[s.kv]||0)*100,riseOnHover:true});
+  m.bindPopup(()=>{const d=D.find(x=>x.district===s.district);return `<div class="pp"><h4>${esc(s.name)}</h4><div><b style="color:${KVC[s.kv]}">${grid?s.kv+' kV':s.kv==='TSS'?'Traction sub-station':s.kv==='HVDC'?'HVDC terminal':s.kv+' generating station'}</b> · <span class="stat ${s.status}">${s.status==='UC'?'Under construction':s.status}</span></div>${s.note?`<div class="r">${esc(s.note)}</div>`:''}<div class="r">Owner: ${esc(s.owner)}</div><div class="r">${esc(s.district)} · ${s.discom}</div><div style="margin-top:6px"><a data-open="${esc(s.district)}">Open ${esc(s.district)} →</a></div></div>`});
+  if(lab)m.bindTooltip(s.name,{permanent:true,direction:'right',offset:[6,0],className:'slab'});
+  m.addTo(ssLayer);markers[s.id]=m;
+  if(grid&&s.status==='Existing'&&inScope(s))L.circle([s.lat,s.lon],{radius:20000,pane:'rings',color:KVC[s.kv],weight:.6,fillColor:KVC[s.kv],fillOpacity:.06,interactive:false}).addTo(ringLayer);
+ });
+}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-open]');if(a){e.preventDefault();openDist(a.dataset.open)}});
+function refreshMap(){if(!map)return;distLayer.setStyle(distStyle);drawPoints();legend()}
+function flyTo(id){const s=S.find(x=>x.id===id);if(!s)return;document.getElementById('map').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});
+ if(!$('#tSS').checked||!$('#tUC').checked||!$('#tGen').checked){$('#tSS').checked=$('#tUC').checked=$('#tGen').checked=true;drawPoints()}
+ map.flyTo([s.lat,s.lon],10,{duration:RM?0:1});setTimeout(()=>markers[id]&&markers[id].openPopup(),RM?50:1050)}
+
+function setScope(s){scope=s;document.querySelectorAll('#scope button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));band='All';renderAll();
+ if(map){if(s==='Bihar')map.fitBounds([[24.28,83.32],[27.53,88.3]]);else{const fs=GEO.features.filter(f=>D.find(d=>d.district===f.properties.district).discom===s);map.fitBounds(L.geoJSON({type:'FeatureCollection',features:fs}).getBounds(),{padding:[10,10]})}}}
+document.querySelectorAll('#scope button').forEach(b=>b.onclick=()=>setScope(b.dataset.s));
+$('#refresh').onclick=boot;
+
+/* ---------- drawer ---------- */
+function openDist(name){const d=D.find(x=>x.district===name);if(!d)return;curDist=name;
+ if(!distOrder.includes(name))distOrder=sorted(D.filter(inScope)).map(x=>x.district);
+ const ss=S.filter(s=>s.district===name).sort((a,b)=>(+b.kv||0)-(+a.kv||0)||a.name.localeCompare(b.name));
+ $('#dName').textContent=name;
+ $('#dChips').innerHTML=`<span class="chip ${d.discom==='SBPDCL'?'sb':'nb'}">${d.discom}</span><span class="chip ${bandCls(d.band)}">${d.band} · ${d.score}</span>`;
+ const K=[['Grid sub-stations',d.gss_existing],['Under construction / proposed',d.gss_planned],['220 kV and above',d.kv765+d.kv400+d.kv220],['Area within 20 km',d.cov20+'%'],['After planned projects',d.cov20_planned+'%'],['Farthest point',f1(d.max_dist_km)+' km'],['Area',fmt(d.area_km2)+' km²'],['Population 2011',d.population_2011?f1(d.population_2011/1e5)+' lakh':'–'],['People per sub-station',d.pop_lakh_per_gss!=null?f1(d.pop_lakh_per_gss)+' lakh':'–']];
+ const fl=d.flags.length?d.flags.map(f=>`<li>${esc(f)}</li>`).join(''):'<li class="ok">No concerns on these measures</li>';
+ $('#dBody').innerHTML=`<div style="display:flex;gap:16px;align-items:center" class="card">${ring(d.cov20,bandCol(d.band),78)}<div><div style="font-weight:600">Area within 20 km of a grid sub-station</div><div class="foot" style="margin:2px 0 0">Average distance to the nearest one is ${f1(d.mean_dist_km)} km. Nearest 220 kV or higher source is ${f1(d.centroid_to_220_km)} km from the district centre.</div></div></div>
+ <div class="dk">${K.map(k=>`<div class="fact"><div class="fl">${k[0]}</div><div class="fv">${k[1]}</div></div>`).join('')}</div>
+ <div><h2 style="font-size:15px">Points to note</h2><ul class="flags">${fl}</ul></div>
+ <div class="card"><h2 style="font-size:15px">Sub-stations and plants (${ss.length})</h2><div class="tbox"><table><thead><tr><th>Name</th><th>kV</th><th>Status</th><th>Owner</th></tr></thead><tbody>${ss.map(s=>`<tr data-id="${s.id}" style="cursor:pointer"><td><b>${esc(s.name)}</b>${s.note?`<div class="foot" style="margin:0">${esc(s.note)}</div>`:''}</td><td class="kvt" style="color:${KVC[s.kv]}">${s.kv}</td><td><span class="stat ${s.status}">${s.status==='UC'?'Under construction':s.status}</span></td><td>${esc(s.owner)}</td></tr>`).join('')||'<tr><td colspan=4>None on the map</td></tr>'}</tbody></table></div></div>
+ <button class="btn pri" id="dMap" style="align-self:flex-start">Show on map</button>`;
+ $('#dBody').querySelectorAll('tr[data-id]').forEach(tr=>tr.onclick=()=>{closeD();flyTo(+tr.dataset.id)});
+ $('#dMap').onclick=()=>{closeD();const f=GEO.features.find(f=>f.properties.district===name);document.getElementById('map').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});map.fitBounds(L.geoJSON(f).getBounds(),{padding:[20,20]})};
+ $('#drawer').classList.add('on');$('#scrim').classList.add('on');$('#drawer').setAttribute('aria-hidden','false');$('#drawer').scrollTop=0;
+}
+function closeD(){$('#drawer').classList.remove('on');$('#scrim').classList.remove('on');$('#drawer').setAttribute('aria-hidden','true');curDist=null}
+function stepD(n){if(!curDist)return;const i=distOrder.indexOf(curDist);openDist(distOrder[(i+n+distOrder.length)%distOrder.length])}
+$('#dClose').onclick=closeD;$('#scrim').onclick=closeD;$('#dPrev').onclick=()=>stepD(-1);$('#dNext').onclick=()=>stepD(1);
+document.addEventListener('keydown',e=>{if(!curDist)return;if(e.key==='Escape')closeD();if(e.key==='ArrowRight')stepD(1);if(e.key==='ArrowLeft')stepD(-1)});
+
+boot();
+</script>
+</body>
+</html>
