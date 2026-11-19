@@ -3,10 +3,10 @@ import json, numpy as np, math
 from PIL import Image
 from scipy import ndimage
 Image.MAX_IMAGE_PIXELS = None
-OUT = '/home/claude/site/data'
+OUT = 'data'
 import os; os.makedirs(OUT, exist_ok=True)
-src = np.array(Image.open('/home/claude/pdf/full-000.jpg').convert('RGB')).astype(int)
-x0, y0, sx, sy, rot = json.load(open('/home/claude/geo/transform.json'))
+src = np.array(Image.open('tools/src/power_map_scan.jpg').convert('RGB')).astype(int)
+x0, y0, sx, sy, rot = json.load(open('tools/src/transform.json'))
 # crop to inner frame
 X0, Y0, X1, Y1 = 100, 100, 4928, 3512
 img = src[Y0:Y1, X0:X1]
@@ -19,6 +19,16 @@ blank = np.zeros(R.shape, bool)
 # title text & legend area
 blank[0:200, 1300:3700] = True
 blank[2680:, 3400:] = True
+import sys; sys.path.insert(0, 'tools')
+from entries import E
+RAD = {'765': 64, '400': 60, '220': 37, '132': 27, 'Thermal': 32, 'Hydro': 30, 'HVDC': 42, 'TSS': 26}
+yy, xx = np.ogrid[:R.shape[0], :R.shape[1]]
+knock = np.zeros(R.shape, bool)
+for e in E:
+    r = RAD.get(e[1], 22); cx, cy = e[4] - X0, e[5] - Y0
+    y0_, y1_, x0_, x1_ = max(0, cy - r), cy + r + 1, max(0, cx - r), cx + r + 1
+    sub = (yy[y0_:y1_] - cy) ** 2 + (xx[:, x0_:x1_] - cx) ** 2 <= r * r
+    knock[y0_:y1_, x0_:x1_] |= sub
 masks = {
     'l765': (R > 90) & (R < 170) & (G > 40) & (G < 110) & (B > 15) & (B < 80) & (R - G > 35) & (G - B > 15),
     'l400': (R > 170) & (G < 120) & (B < 120) & (R - G > 90),
@@ -31,7 +41,7 @@ def merc(lat_):
     return math.log(math.tan(math.pi / 4 + math.radians(lat_) / 2))
 
 H, W = R.shape
-scale = 0.7
+scale = 1.0
 OW = int(W * scale)
 mN, mS = merc(north), merc(south)
 OH = int(round(H * scale * (mN - mS) / math.radians(north - south)))
@@ -48,11 +58,11 @@ def warp(arr):
     return ndimage.map_coordinates(arr.astype(float), np.meshgrid(rows, cols, indexing='ij'), order=1)
 
 for k, m in masks.items():
-    m = m & ~blank
+    m = m & ~blank & ~knock
     m = ndimage.binary_opening(m, np.ones((2, 2)))
     m = ndimage.binary_dilation(m, iterations=1)
     a = warp(m.astype(float))
-    a = np.clip(a * 1.6, 0, 1)
+    a = np.clip(a * 1.4, 0, 1)
     out = np.zeros((OH, OW, 4), np.uint8)
     out[..., :3] = colours[k]
     out[..., 3] = (a * 255).astype(np.uint8)
@@ -61,7 +71,7 @@ for k, m in masks.items():
     print(k, m.sum(), os.path.getsize(f'{OUT}/{k}.png'))
 # original map, reprojected, JPEG
 rgb = np.stack([warp(img[..., c]) for c in range(3)], -1).clip(0, 255).astype(np.uint8)
-Image.fromarray(rgb).save(f'{OUT}/original_map.jpg', quality=72, optimize=True)
+Image.fromarray(rgb).resize((OW*3//4, OH*3//4), Image.LANCZOS).save(f'{OUT}/original_map.jpg', quality=70, optimize=True)
 print('orig', os.path.getsize(f'{OUT}/original_map.jpg'))
 json.dump({'south': south, 'west': west, 'north': north, 'east': east}, open(f'{OUT}/overlay_bounds.json', 'w'))
 print(south, west, north, east, OW, OH)

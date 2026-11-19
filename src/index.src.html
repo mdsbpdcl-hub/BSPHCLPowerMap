@@ -3,201 +3,230 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bihar Power Map – Interactive</title>
+<title>Bihar Transmission Network – Interactive Power Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 /*LEAFLET_CSS*/
 </style>
 <style>
 :root{
-  --bar:#0f1b2d;--bar2:#16263d;--ink:#0f172a;--ink2:#334155;--muted:#64748b;--faint:#94a3b8;--line:#e2e8f0;--bg:#f1f5f9;--panel:#ffffff;--hi:#0e7490;--hiS:#ecfeff;
-  --k765:#7a4828;--k400:#dc2626;--k220:#16a34a;--k132:#2563eb;
-  --sb:#2a78d6;--nb:#eb6834;
-  --good:#15803d;--goodB:#dcfce7;--watch:#a16207;--watchB:#fef3c7;--weak:#b91c1c;--weakB:#fee2e2;
+ --navy:#1e3a5f;--ink:#111827;--ink2:#374151;--muted:#6b7280;--faint:#9ca3af;--line:#e5e7eb;--line2:#f0f2f5;--bg:#f4f6f9;--accS:#f0f5fb;
+ --k765:#7a4828;--k400:#d92d20;--k220:#16a34a;--k132:#2563eb;
+ --good:#15803d;--goodB:#ecfdf3;--watch:#b45309;--watchB:#fffbeb;--weak:#b42318;--weakB:#fef3f2;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:14px;line-height:1.45;display:flex;flex-direction:column}
+body{font-family:Inter,"Segoe UI",Roboto,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:13.5px;line-height:1.45;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
-.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
-/* top bar */
-.top{background:var(--bar);color:#e2e8f0;display:flex;align-items:center;gap:14px;padding:8px 14px;flex-wrap:wrap;flex:none}
-.logo{width:30px;height:30px;border-radius:7px;background:#facc15;display:grid;place-items:center;flex:none}
-.tt{min-width:0;flex:1 1 260px}
-.tt b{font-size:15px;font-weight:600;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt span{font-size:12px;color:#94a3b8}
-.seg{display:inline-flex;border:1px solid #334155;border-radius:7px;overflow:hidden}
-.seg button{background:transparent;border:0;color:#cbd5e1;padding:5px 12px;cursor:pointer;font-size:13px}
-.seg button+button{border-left:1px solid #334155}
-.seg button.on{background:#facc15;color:#0f172a;font-weight:600}
-/* layout */
-.shell{flex:1;display:grid;grid-template-columns:270px minmax(0,1fr) 420px;min-height:0}
-.lp,.rp{background:var(--panel);overflow:auto;min-height:0}
-.lp{border-right:1px solid var(--line);padding:12px 14px}
-.rp{border-left:1px solid var(--line);display:flex;flex-direction:column}
-#map{min-height:0;background:#e9eef4}
-.blk{border-bottom:1px solid var(--line);padding:10px 0 12px}
-.blk:last-child{border-bottom:0}
-.h{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-.tog{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}
-.tog input{accent-color:var(--hi);width:15px;height:15px;margin:0}
-.tog .cnt{margin-left:auto;color:var(--faint);font-size:12px}
-.sw{width:22px;height:0;border-top:3px solid;flex:none}
-.sw.d{border-top-style:dashed}
-.inp{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#fff}
-.inp:focus{outline:2px solid var(--hi);outline-offset:-1px}
-.lgd{display:grid;grid-template-columns:22px 1fr;gap:5px 8px;align-items:center;font-size:12.5px;color:var(--ink2)}
-.ramp{height:8px;border-radius:2px;margin-top:6px}
-.rlab{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
-/* tabs */
-.tabs{display:flex;border-bottom:1px solid var(--line);flex:none;position:sticky;top:0;background:#fff;z-index:2}
-.tabs button{flex:1;border:0;background:transparent;padding:10px 6px;cursor:pointer;font-weight:500;color:var(--muted);border-bottom:2px solid transparent}
-.tabs button.on{color:var(--ink);border-bottom-color:var(--hi)}
-.pane{padding:14px;display:none}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px}
+.num{font-variant-numeric:tabular-nums}
+header{background:#fff;border-bottom:1px solid var(--line);flex:none}
+.hb{display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+.mark{width:34px;height:34px;border-radius:8px;background:var(--navy);display:grid;place-items:center;flex:none}
+.tt{flex:1 1 280px;min-width:0}
+.tt h1{margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.tt p{margin:0;font-size:12px;color:var(--muted)}
+.seg{display:inline-flex;background:var(--line2);border-radius:8px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:6px;padding:5px 14px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(16,24,40,.12)}
+.ed{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:4px 9px;white-space:nowrap}
+.strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line)}
+.strip div{padding:8px 18px;border-right:1px solid var(--line);min-width:0}
+.strip div:last-child{border-right:0}
+.strip small{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip b{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.strip i{font-style:normal;font-size:11.5px;color:var(--watch);margin-left:5px;font-weight:500}
+.strip .kd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.shell{flex:1;display:grid;grid-template-columns:250px minmax(0,1fr) 410px;min-height:0}
+.lp{background:#fff;border-right:1px solid var(--line);overflow:auto}
+.rp{background:#fff;border-left:1px solid var(--line);overflow:auto;display:flex;flex-direction:column}
+.mapw{position:relative;min-height:0}
+#map{position:absolute;inset:0;background:#e8edf3}
+details.grp{border-bottom:1px solid var(--line)}
+details.grp>summary{list-style:none;cursor:pointer;padding:11px 16px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+details.grp>summary::-webkit-details-marker{display:none}
+details.grp>summary:after{content:"–"}
+details.grp:not([open])>summary:after{content:"+"}
+.gb{padding:0 16px 12px}
+.row{display:flex;align-items:center;gap:9px;padding:4px 0;cursor:pointer;font-size:13px}
+.row input{accent-color:var(--navy);width:14px;height:14px;margin:0;flex:none}
+.row .c{margin-left:auto;color:var(--faint);font-size:12px}
+.ls{width:24px;height:0;border-top:3px solid;flex:none}
+.sym{width:24px;display:grid;place-items:center;flex:none}
+.inp{width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 10px;background:#fff;font-size:13px}
+.inp:focus{outline:2px solid var(--navy);outline-offset:-1px;border-color:transparent}
+.sub{font-size:11.5px;color:var(--faint);margin-top:4px}
+.ov{position:absolute;z-index:500;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:8px;box-shadow:0 2px 8px rgba(16,24,40,.08)}
+#info{top:12px;right:12px;width:255px;padding:10px 12px;font-size:12.5px}
+#info h4{margin:0 0 4px;font-size:14px}
+#info .kv{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-top:7px}
+#info .kv span{color:var(--muted)}
+#lgd{right:12px;bottom:26px;padding:8px 12px;font-size:12px;width:255px}
+#lgd summary{cursor:pointer;font-weight:600;font-size:12px;list-style:none;display:flex;justify-content:space-between}
+#lgd summary::-webkit-details-marker{display:none}
+.lg{display:grid;grid-template-columns:26px 1fr;gap:4px 6px;align-items:center;margin-top:8px}
+.ramp{height:8px;border-radius:2px}
+#coord{left:120px;bottom:24px;padding:2px 8px;color:var(--muted);font-size:11.5px}
+.na{position:absolute;z-index:500;left:14px;top:86px;width:26px;height:36px;pointer-events:none}
+.tabs{display:flex;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:3;flex:none}
+.tabs button{flex:1;border:0;background:none;padding:11px 4px;cursor:pointer;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;font-size:13px}
+.tabs button.on{color:var(--navy);border-bottom-color:var(--navy);font-weight:600}
+.pane{display:none;padding:16px}
 .pane.on{display:block}
-.kg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:14px}
-.kg div{padding:9px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.kg div:nth-child(3n){border-right:0}
-.kg div:nth-last-child(-n+3){border-bottom:0}
-.kg small{display:block;font-size:11.5px;color:var(--muted)}
-.kg b{font-size:18px;font-weight:600}
-.sec{font-size:13px;font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
-.sec:after{content:"";flex:1;border-top:1px solid var(--line)}
-.vb{display:grid;grid-template-columns:62px minmax(0,1fr) 70px;gap:6px;align-items:center;font-size:12.5px;margin:5px 0}
-.vb .tr{height:14px;background:#f1f5f9;border-radius:3px;display:flex;overflow:hidden}
-.vb .tr i{display:block;height:100%}
-.vb .n{text-align:right;color:var(--ink2)}
+h3.s{font-size:11.5px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em;margin:22px 0 8px}
+h3.s:first-child{margin-top:0}
 table{border-collapse:collapse;width:100%;font-size:12.5px}
-th,td{padding:6px 7px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
-th{font-weight:600;color:var(--muted);background:#f8fafc;position:sticky;top:0;cursor:pointer;user-select:none;z-index:1}
-th.s:after{content:" ▲";font-size:9px}th.s.d:after{content:" ▼"}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line2);text-align:left;white-space:nowrap}
+thead th{font-weight:600;color:var(--muted);font-size:11.5px;background:#f9fafb;border-bottom:1px solid var(--line)}
 td.r,th.r{text-align:right}
-tbody tr{cursor:pointer}
-tbody tr:hover{background:var(--hiS)}
-.tb{overflow:auto;border:1px solid var(--line);border-radius:8px;max-height:calc(100vh - 260px)}
-.bd{display:inline-block;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px}
-.bd.Good{background:var(--goodB);color:var(--good)}.bd.Watch{background:var(--watchB);color:var(--watch)}.bd.Weak{background:var(--weakB);color:var(--weak)}
-.bd.Existing{background:var(--goodB);color:var(--good)}.bd.UC{background:var(--watchB);color:var(--watch)}.bd.Proposed{background:#e0e7ff;color:#3730a3}
-.bd.SBPDCL{background:#dbeafe;color:#1d4ed8}.bd.NBPDCL{background:#ffedd5;color:#c2410c}
-.find{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
-.find li{border-left:3px solid var(--hi);background:#f8fafc;padding:7px 10px;border-radius:0 6px 6px 0;font-size:13px}
-.find li.w{border-left-color:#dc2626}.find li.a{border-left-color:#d97706}
-.lk{color:var(--hi);cursor:pointer;font-weight:500}
-.lk:hover{text-decoration:underline}
-.cmp td:first-child{color:var(--muted)}
-.row2{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
-.row2 .inp{flex:1 1 120px;width:auto}
-.btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12.5px}
-.btn:hover{border-color:var(--hi);color:var(--hi)}
-.back{display:inline-flex;gap:6px;align-items:center;margin-bottom:10px}
-.dhd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.dhd h3{margin:0;font-size:18px}
-.note{font-size:12.5px;color:var(--muted)}
-details summary{cursor:pointer;font-weight:600;font-size:13px}
-details li{font-size:12.5px;color:var(--ink2);margin:4px 0}
-/* leaflet look */
+tfoot td{font-weight:600;border-top:1px solid var(--line);border-bottom:0;background:#f9fafb}
+.box{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.box tbody tr:last-child td{border-bottom:0}
+.scroll{overflow:auto;max-height:calc(100vh - 290px)}
+.sortable th{cursor:pointer;user-select:none;position:sticky;top:0;z-index:1}
+.sortable th.s:after{content:" ↑";color:var(--navy)}.sortable th.s.d:after{content:" ↓"}
+tr.ck{cursor:pointer}
+tr.ck:hover{background:var(--accS)}
+.tag{display:inline-block;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px;line-height:1.5;white-space:nowrap}
+.tag.Good,.tag.Existing{background:var(--goodB);color:var(--good)}
+.tag.Watch,.tag.UC{background:var(--watchB);color:var(--watch)}
+.tag.Weak{background:var(--weakB);color:var(--weak)}
+.tag.Proposed{background:#eef4ff;color:#3538cd}
+.tag.SBPDCL{background:#eff6ff;color:#1d4ed8}.tag.NBPDCL{background:#fff4ed;color:#c4320a}
+.kvt{font-weight:600}
+ol.fd{margin:0;padding:0;list-style:none;counter-reset:f}
+ol.fd li{counter-increment:f;display:grid;grid-template-columns:22px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13px;color:var(--ink2)}
+ol.fd li:before{content:counter(f);width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+ol.fd li:last-child{border-bottom:0}
+.lk{color:var(--navy);cursor:pointer;font-weight:500;text-decoration:underline;text-decoration-color:#c7d2e0;text-underline-offset:2px}
+.lk:hover{text-decoration-color:var(--navy)}
+.mb{display:flex;align-items:center;gap:6px}
+.mb .t{flex:1;height:6px;background:var(--line2);border-radius:3px;overflow:hidden;min-width:40px}
+.mb .t i{display:block;height:100%;border-radius:3px}
+.tools{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tools .inp{flex:1 1 110px;width:auto}
+.btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 11px;cursor:pointer;font-size:12.5px;font-weight:500}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.dh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
+.dh h2{margin:0;font-size:19px;font-weight:600}
+.note{font-size:12px;color:var(--muted)}
+.callout{border-left:3px solid var(--watch);background:var(--watchB);padding:7px 10px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:6px}
+.callout.ok{border-left-color:var(--good);background:var(--goodB)}
+.callout.bad{border-left-color:var(--weak);background:var(--weakB)}
+details.ab summary{cursor:pointer;font-weight:600;font-size:12.5px;color:var(--ink2)}
+details.ab li{font-size:12.5px;color:var(--ink2);margin:5px 0}
 .leaflet-container{font-family:inherit}
-.leaflet-popup-content-wrapper{border-radius:8px}
-.leaflet-popup-content{margin:10px 12px;font-size:12.5px;line-height:1.5;min-width:200px}
-.pp h4{margin:0 0 3px;font-size:14px}
-.pp table td{padding:2px 6px 2px 0;border:0;white-space:normal}
-.pp table td:first-child{color:var(--muted)}
-.dlab{background:transparent;border:0;box-shadow:none;font-size:10.5px;font-weight:600;color:#6b4c80;text-transform:uppercase;letter-spacing:.05em;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff;padding:0}
+.leaflet-popup-content-wrapper{border-radius:8px;box-shadow:0 4px 16px rgba(16,24,40,.15)}
+.leaflet-popup-content{margin:11px 13px;font-size:12.5px;line-height:1.5;min-width:220px}
+.pp h4{margin:0 0 6px;font-size:14px}
+.pp td{padding:2px 8px 2px 0;border:0;white-space:normal}
+.pp td:first-child{color:var(--muted)}
+.dlab{background:transparent;border:0;box-shadow:none;font-size:10px;font-weight:600;color:#6b5a7a;text-transform:uppercase;letter-spacing:.08em;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;padding:0}
+.slab{background:transparent;border:0;box-shadow:none;font-size:11px;font-weight:500;padding:0;color:#111827;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 3px #fff,0 0 4px #fff}
 .dlab:before,.slab:before{display:none}
-.slab{background:rgba(255,255,255,.88);border:0;box-shadow:none;font-size:10.5px;padding:0 3px;border-radius:2px;color:#0f172a}
-.scale-box{background:rgba(255,255,255,.9);padding:4px 8px;border-radius:5px;font-size:11.5px;color:var(--muted);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.nodl .dlab{display:none}
+.mk{position:absolute;transform:translate(-50%,-50%)}
+.m765{width:clamp(17px,calc(128px*var(--k)),56px);height:clamp(17px,calc(128px*var(--k)),56px)}
+.m400{width:clamp(15px,calc(120px*var(--k)),50px);height:clamp(15px,calc(120px*var(--k)),50px)}
+.m220{width:clamp(12px,calc(74px*var(--k)),36px);height:clamp(12px,calc(74px*var(--k)),36px)}
+.m132{width:clamp(9px,calc(54px*var(--k)),28px);height:clamp(9px,calc(54px*var(--k)),28px)}
+.mgen{width:clamp(14px,calc(62px*var(--k)),30px);height:clamp(14px,calc(62px*var(--k)),30px)}
 .state{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);z-index:5000}
-.state div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px 28px;text-align:center}
-.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--hi);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 8px}
+.state>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px 30px;text-align:center}
+.spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--navy);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 8px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .hide{display:none!important}
-.mtabs{display:none}
-@media (max-width:1150px){.shell{grid-template-columns:240px minmax(0,1fr) 360px}}
+@media (max-width:1200px){.shell{grid-template-columns:230px minmax(0,1fr) 360px}.strip{grid-template-columns:repeat(4,minmax(0,1fr))}.strip div:nth-child(4){border-right:0}.strip div:nth-child(-n+4){border-bottom:1px solid var(--line)}}
 @media (max-width:900px){
- body{height:auto;display:block}
+ html,body{height:auto}body{display:block}
  .shell{display:flex;flex-direction:column}
- #map{height:62vh;order:1}
- .rp{order:2;border-left:0;border-top:1px solid var(--line)}
- .lp{order:3;border-right:0;border-top:1px solid var(--line)}
- .tb{max-height:60vh}
+ .mapw{height:62vh;order:1}.rp{order:2;border-left:0;border-top:1px solid var(--line)}.lp{order:3;border-right:0;border-top:1px solid var(--line)}
+ .scroll{max-height:65vh}#info{width:210px}#lgd{width:220px}#coord{display:none}
+ .strip{grid-template-columns:repeat(3,minmax(0,1fr))}.strip div{padding:7px 12px}.strip div:nth-child(4){border-right:1px solid var(--line)}.strip div:nth-child(3n){border-right:0}.strip div:nth-child(-n+6){border-bottom:1px solid var(--line)}
 }
-@media (max-width:480px){.kg{grid-template-columns:repeat(2,minmax(0,1fr))}.kg div:nth-child(3n){border-right:1px solid var(--line)}.kg div:nth-child(2n){border-right:0}.kg div:nth-last-child(-n+3){border-bottom:1px solid var(--line)}.kg div:nth-last-child(-n+2){border-bottom:0}.top{gap:8px}.tt span{display:none}}
+@media (max-width:520px){.hb{padding:9px 12px}.ed{display:none}.strip b{font-size:16px}#info{display:none}#lgd{width:200px}#lgd:not([open]){width:auto}}
 </style>
 </head>
 <body>
 <div class="state" id="st-load"><div><div class="spin"></div>Loading map…</div></div>
 <div class="state hide" id="st-err"><div><b>Could not load the data</b><p class="note">Please try again.</p><button class="btn" onclick="boot()">Try again</button></div></div>
 
-<header class="top">
- <div class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#0f172a"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
- <div class="tt"><b>Bihar Power Map — Transmission Network</b><span>Digitised from BSPHCL Comprehensive Bihar Map · 13th Plan edition, rev. Aug 2020</span></div>
- <div class="seg" id="scope"><button data-s="Bihar" class="on">Bihar</button><button data-s="SBPDCL">SBPDCL</button><button data-s="NBPDCL">NBPDCL</button></div>
+<header>
+ <div class="hb">
+  <div class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fbbf24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+  <div class="tt"><h1>Bihar Transmission Network</h1><p>Interactive power map with district-wise status · digitised from the BSPHCL Comprehensive Bihar Map</p></div>
+  <div class="seg" id="scope"><button data-s="Bihar" class="on">Bihar</button><button data-s="SBPDCL">SBPDCL</button><button data-s="NBPDCL">NBPDCL</button></div>
+  <span class="ed">Map edition: Aug 2020</span>
+ </div>
+ <div class="strip" id="strip"></div>
 </header>
 
 <div class="shell">
  <aside class="lp">
-  <div class="blk">
-   <div class="h">Find</div>
-   <input class="inp" type="search" id="find" list="names" placeholder="Sub-station or district…">
+  <details class="grp" open><summary>Search</summary><div class="gb">
+   <input class="inp" type="search" id="find" list="names" placeholder="Sub-station or district">
    <datalist id="names"></datalist>
-  </div>
-  <div class="blk">
-   <div class="h">Transmission lines</div>
-   <label class="tog"><input type="checkbox" data-l="l765" checked><span class="sw" style="border-color:var(--k765)"></span>765 kV</label>
-   <label class="tog"><input type="checkbox" data-l="l400" checked><span class="sw" style="border-color:var(--k400)"></span>400 kV</label>
-   <label class="tog"><input type="checkbox" data-l="l220" checked><span class="sw" style="border-color:var(--k220)"></span>220 kV</label>
-   <label class="tog"><input type="checkbox" data-l="l132" checked><span class="sw" style="border-color:var(--k132)"></span>132 kV</label>
-   <div class="note" style="margin-top:4px">Dashed on the map = under construction / proposed</div>
-  </div>
-  <div class="blk">
-   <div class="h">Sub-stations &amp; plants</div>
-   <label class="tog"><input type="checkbox" class="kvf" value="765" checked><span id="i765"></span>765 kV<span class="cnt" id="c765"></span></label>
-   <label class="tog"><input type="checkbox" class="kvf" value="400" checked><span id="i400"></span>400 kV<span class="cnt" id="c400"></span></label>
-   <label class="tog"><input type="checkbox" class="kvf" value="220" checked><span id="i220"></span>220 kV<span class="cnt" id="c220"></span></label>
-   <label class="tog"><input type="checkbox" class="kvf" value="132" checked><span id="i132"></span>132 kV<span class="cnt" id="c132"></span></label>
-   <label class="tog"><input type="checkbox" class="kvf" value="gen" checked><span id="igen"></span>Generation / HVDC / traction<span class="cnt" id="cgen"></span></label>
-   <div style="height:6px"></div>
-   <label class="tog"><input type="checkbox" class="stf" value="Existing" checked>Existing<span class="cnt" id="cEx"></span></label>
-   <label class="tog"><input type="checkbox" class="stf" value="UC" checked>Under construction<span class="cnt" id="cUC"></span></label>
-   <label class="tog"><input type="checkbox" class="stf" value="Proposed" checked>Proposed<span class="cnt" id="cPr"></span></label>
-  </div>
-  <div class="blk">
-   <div class="h">Overlays</div>
-   <label class="tog"><input type="checkbox" id="tLab">Sub-station names</label>
-   <label class="tog"><input type="checkbox" id="tDl" checked>District names</label>
-   <label class="tog"><input type="checkbox" id="tRing">20 km reach circles</label>
-   <label class="tog"><input type="checkbox" id="tOrig">Original BSPHCL map (scan)</label>
-   <label class="tog hide" id="tStreetW"><input type="checkbox" id="tStreet">Street map underlay</label>
-  </div>
-  <div class="blk">
-   <div class="h">Shade districts by</div>
+  </div></details>
+  <details class="grp" open><summary>Transmission lines</summary><div class="gb">
+   <label class="row"><input type="checkbox" data-l="l765" checked><span class="ls" style="border-color:var(--k765)"></span>765 kV</label>
+   <label class="row"><input type="checkbox" data-l="l400" checked><span class="ls" style="border-color:var(--k400)"></span>400 kV</label>
+   <label class="row"><input type="checkbox" data-l="l220" checked><span class="ls" style="border-color:var(--k220)"></span>220 kV</label>
+   <label class="row"><input type="checkbox" data-l="l132" checked><span class="ls" style="border-color:var(--k132)"></span>132 kV</label>
+   <div class="sub">Dashed lines are under construction or proposed.</div>
+  </div></details>
+  <details class="grp" open><summary>Sub-stations</summary><div class="gb">
+   <label class="row"><input type="checkbox" class="kvf" value="765" checked><span class="sym" id="s765"></span>765 kV<span class="c" id="c765"></span></label>
+   <label class="row"><input type="checkbox" class="kvf" value="400" checked><span class="sym" id="s400"></span>400 kV<span class="c" id="c400"></span></label>
+   <label class="row"><input type="checkbox" class="kvf" value="220" checked><span class="sym" id="s220"></span>220 kV<span class="c" id="c220"></span></label>
+   <label class="row"><input type="checkbox" class="kvf" value="132" checked><span class="sym" id="s132"></span>132 kV<span class="c" id="c132"></span></label>
+   <label class="row"><input type="checkbox" class="kvf" value="gen" checked><span class="sym" id="sgen"></span>Power plants &amp; others<span class="c" id="cgen"></span></label>
+  </div></details>
+  <details class="grp" open><summary>Status</summary><div class="gb">
+   <label class="row"><input type="checkbox" class="stf" value="Existing" checked><span class="sym" id="sEx"></span>In service<span class="c" id="cEx"></span></label>
+   <label class="row"><input type="checkbox" class="stf" value="UC" checked><span class="sym" id="sUC"></span>Under construction<span class="c" id="cUC"></span></label>
+   <label class="row"><input type="checkbox" class="stf" value="Proposed" checked><span class="sym" id="sPr"></span>Proposed<span class="c" id="cPr"></span></label>
+  </div></details>
+  <details class="grp" open><summary>District shading</summary><div class="gb">
    <select class="inp" id="shade">
-    <option value="band">Overall status (Good / Watch / Weak)</option>
-    <option value="cov20">Area within 20 km of a GSS (%)</option>
-    <option value="gss_existing">Grid sub-stations (existing)</option>
-    <option value="pop_lakh_per_gss">Population per GSS (lakh)</option>
-    <option value="mean_dist_km">Average distance to nearest GSS (km)</option>
-    <option value="discom">DISCOM</option>
     <option value="none">None</option>
+    <option value="band">Overall rating</option>
+    <option value="cov20">Area within 20 km of a sub-station</option>
+    <option value="mean_dist_km">Average distance to nearest sub-station</option>
+    <option value="gss_existing">Number of sub-stations</option>
+    <option value="pop_lakh_per_gss">Population per sub-station</option>
+    <option value="discom">DISCOM</option>
    </select>
-   <div id="legend" style="margin-top:8px"></div>
-  </div>
+  </div></details>
+  <details class="grp" open><summary>Display</summary><div class="gb">
+   <label class="row" style="cursor:default">Names
+    <select class="inp" id="names-mode" style="width:auto;margin-left:auto;padding:3px 6px"><option value="auto">When zoomed in</option><option value="on">Always</option><option value="off">Off</option></select></label>
+   <label class="row"><input type="checkbox" id="tDl" checked>District names</label>
+   <label class="row"><input type="checkbox" id="tRing">20 km reach circles</label>
+   <label class="row"><input type="checkbox" id="tOrig">Original scanned map</label>
+   <label class="row hide" id="tStreetW"><input type="checkbox" id="tStreet">Street map underlay</label>
+  </div></details>
  </aside>
 
- <div id="map"></div>
+ <div class="mapw">
+  <div id="map"></div>
+  <svg class="na" viewBox="0 0 30 40" aria-label="North"><path d="M15 2 24 30 15 24 6 30z" fill="#1e3a5f"/><path d="M15 2 15 24 6 30z" fill="#4b6a91"/><text x="15" y="39" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a5f">N</text></svg>
+  <div class="ov" id="info"></div>
+  <details class="ov" id="lgd"><summary>Legend <span style="color:var(--faint)">▾</span></summary><div id="lgdBody"></div></details>
+  <div class="ov mono" id="coord">—</div>
+ </div>
 
  <aside class="rp">
-  <div class="tabs" id="tabs"><button data-t="sum" class="on">Analysis</button><button data-t="dis">Districts</button><button data-t="reg">Register</button></div>
-  <div class="pane on" id="p-sum"></div>
+  <div class="tabs" id="tabs"><button data-t="ov" class="on">Overview</button><button data-t="dis">Districts</button><button data-t="reg">Sub-stations</button></div>
+  <div class="pane on" id="p-ov"></div>
   <div class="pane" id="p-dis"></div>
   <div class="pane" id="p-reg">
-   <div class="row2"><input class="inp" type="search" id="q" placeholder="Search…">
-    <select class="inp" id="fkv"><option value="">All kV</option><option>765</option><option>400</option><option>220</option><option>132</option><option>Thermal</option><option>Hydro</option><option>HVDC</option><option>TSS</option></select>
-    <select class="inp" id="fst"><option value="">All status</option><option>Existing</option><option>UC</option><option>Proposed</option></select></div>
-   <div class="tb"><table id="reg"><thead></thead><tbody></tbody></table></div>
-   <div class="row2" style="margin-top:8px;align-items:center"><span class="note" id="regCount" style="flex:1"></span><button class="btn" id="copy">Copy CSV</button></div>
+   <div class="tools"><input class="inp" type="search" id="q" placeholder="Search name, district, owner">
+    <select class="inp" id="fkv" style="flex:0 1 90px"><option value="">All kV</option><option>765</option><option>400</option><option>220</option><option>132</option><option>Thermal</option><option>Hydro</option><option>HVDC</option><option>TSS</option></select>
+    <select class="inp" id="fst" style="flex:0 1 130px"><option value="">All status</option><option value="Existing">In service</option><option value="UC">Under construction</option><option>Proposed</option></select></div>
+   <div class="box scroll"><table class="sortable" id="reg"><thead></thead><tbody></tbody></table></div>
+   <div style="display:flex;align-items:center;margin-top:8px"><span class="note" id="regCount" style="flex:1"></span><button class="btn" id="copy">Copy as CSV</button></div>
   </div>
  </aside>
 </div>
@@ -210,170 +239,193 @@ const fmt=n=>n==null?'–':NF.format(Math.round(n));
 const f1=n=>n==null?'–':(Math.round(n*10)/10).toLocaleString('en-IN',{minimumFractionDigits:1,maximumFractionDigits:1});
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KVC={'765':'#7a4828','400':'#dc2626','220':'#16a34a','132':'#2563eb',Thermal:'#334155',Hydro:'#0e7490',HVDC:'#7e22ce',TSS:'#c026d3'};
+const KVC={'765':'#7a4828','400':'#d92d20','220':'#16a34a','132':'#2563eb',Thermal:'#374151',Hydro:'#0e7490',HVDC:'#7e22ce',TSS:'#c026d3'};
 const GRID=['765','400','220','132'];
 const BCOL={Good:'#16a34a',Watch:'#d97706',Weak:'#dc2626'};
-const stLabel=s=>s==='UC'?'Under construction':s;
-const kvLabel=s=>GRID.includes(s.kv)?s.kv+' kV':({Thermal:'Thermal generating station',Hydro:'Hydro generating station',HVDC:'HVDC terminal',TSS:'Railway traction sub-station'})[s.kv];
-let S=[],D=[],GEO=null,BOUNDS=null,scope='Bihar',map,distLayer,ptLayer,labLayer,ringLayer,origLayer,streetLayer,lineLayers={},markers={};
+const STL={Existing:'In service',UC:'Under construction',Proposed:'Proposed'};
+const kvLabel=s=>GRID.includes(s.kv)?s.kv+' kV sub-station':({Thermal:'Thermal power station',Hydro:'Hydro power station',HVDC:'HVDC terminal',TSS:'Railway traction sub-station'})[s.kv];
 const BIHAR=[[24.28,83.32],[27.53,88.3]];
+let S=[],D=[],GEO=null,BOUNDS=null,scope='Bihar',map,distLayer,ptLayer,labLayer,ringLayer,origLayer,streetLayer,lineLayers={},markers={},curD=null,selLayer=null;
 const inScope=x=>scope==='Bihar'||x.discom===scope;
 const isGrid=s=>GRID.includes(s.kv);
+const exGrid=()=>S.filter(s=>isGrid(s)&&s.status==='Existing');
 
 async function boot(){
  $('#st-load').classList.remove('hide');$('#st-err').classList.add('hide');
  try{const g=u=>fetch(u).then(r=>{if(!r.ok)throw 0;return r.json()});
   [S,D,GEO,BOUNDS]=await Promise.all([g('data/substations.json'),g('data/district_stats.json'),g('data/districts_geo.json'),g('data/overlay_bounds.json')]);
  }catch(e){$('#st-load').classList.add('hide');$('#st-err').classList.remove('hide');return}
- $('#st-load').classList.add('hide');
- initMap();renderAll();
+ $('#st-load').classList.add('hide');initMap();renderAll();
 }
 function agg(ds){const a=ds.reduce((o,d)=>{o.area+=d.area_km2;o.pop+=d.population_2011||0;o.cov+=d.cov20*d.area_km2;o.covp+=d.cov20_planned*d.area_km2;o.mean+=d.mean_dist_km*d.area_km2;return o},{area:0,pop:0,cov:0,covp:0,mean:0});a.cov/=a.area;a.covp/=a.area;a.mean/=a.area;return a}
-function renderAll(){counts();drawPoints();distLayer.setStyle(distStyle);legend();renderSum();renderDis();renderReg()}
+function renderAll(){strip();counts();drawPoints();distLayer.setStyle(distStyle);legend();info();renderOv();renderDis();renderReg()}
 
 /* ---------- symbols ---------- */
-function symHTML(kv,status,big){
- const c=KVC[kv]||'#555',sz=({'765':20,'400':17,'220':14,'132':11})[kv]||13;
- if(kv==='Thermal'||kv==='Hydro')return`<div style="width:15px;height:15px;border:2px solid ${c};background:linear-gradient(#fff 50%,${c} 50%);border-radius:2px"></div>`;
- if(kv==='HVDC'||kv==='TSS')return`<div style="width:13px;height:13px;transform:rotate(45deg);background:${c};border:2px solid #fff;box-shadow:0 0 0 1px ${c}"></div>`;
- if(status==='Proposed')return`<svg width="${sz+5}" height="${sz+5}" viewBox="0 0 20 20"><path d="M10 2 18 17H2z" fill="#fff" stroke="${c}" stroke-width="2.4" stroke-dasharray="3 2"/></svg>`;
- if(status==='UC')return`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:#fff;border:2.5px dashed ${c}"></div>`;
- const ring=(kv==='400'||kv==='765')?`box-shadow:0 0 0 2px #fff,0 0 0 3.5px ${c}`:`box-shadow:0 0 0 1.5px ${c}`;
- return`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:${c};border:2px solid #fff;${ring}"></div>`}
-function icon(s){const sz=(({'765':20,'400':17,'220':14,'132':11})[s.kv]||15)+8;return L.divIcon({html:symHTML(s.kv,s.status),className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]})}
-['765','400','220','132'].forEach(k=>$('#i'+k).innerHTML=`<span style="display:inline-grid;place-items:center;width:22px">${symHTML(k,'Existing')}</span>`);
-$('#igen').innerHTML=`<span style="display:inline-grid;place-items:center;width:22px">${symHTML('Thermal','Existing')}</span>`;
+function symHTML(kv,status,fixed){
+ const c=KVC[kv]||'#555',cls=GRID.includes(kv)?'m'+kv:'mgen';
+ const sz=fixed?(({'765':16,'400':15,'220':13,'132':10})[kv]||13):0;
+ const pos=fixed?`width:${sz}px;height:${sz}px;`:'';
+ const cl=fixed?'':`mk ${cls}`;
+ if(kv==='Thermal'||kv==='Hydro')return`<div class="${cl}" style="${pos}border:2px solid ${c};background:linear-gradient(#fff 50%,${c} 50%);border-radius:3px"></div>`;
+ if(kv==='HVDC'||kv==='TSS')return`<div class="${cl}" style="${pos}"><div style="width:72%;height:72%;margin:14%;background:${c};border:2px solid #fff;box-shadow:0 0 0 1px ${c};transform:rotate(45deg)"></div></div>`;
+ if(status==='Proposed')return`<svg class="${cl}" style="${pos}" viewBox="0 0 20 20"><path d="M10 2 18 17H2z" fill="#fff" stroke="${c}" stroke-width="2.2" stroke-dasharray="3 2"/></svg>`;
+ if(status==='UC')return`<div class="${cl}" style="${pos}background:#fff;border:2.5px dashed ${c};border-radius:50%"></div>`;
+ const ehv=kv==='400'||kv==='765';
+ return`<div class="${cl}" style="${pos}border-radius:50%;background:${ehv?`radial-gradient(circle,${c} 0 44%,#fff 45% 58%,${c} 59%)`:c};border:1.5px solid #fff;box-shadow:0 0 0 1px ${c},0 1px 2px rgba(0,0,0,.2)"></div>`}
+function icon(s){return L.divIcon({html:symHTML(s.kv,s.status),className:'',iconSize:[0,0]})}
+GRID.forEach(k=>$('#s'+k).innerHTML=symHTML(k,'Existing',1));$('#sgen').innerHTML=symHTML('Thermal','Existing',1);
+$('#sEx').innerHTML=symHTML('132','Existing',1);$('#sUC').innerHTML=symHTML('132','UC',1);$('#sPr').innerHTML=symHTML('132','Proposed',1);
 
 function counts(){const ss=S.filter(inScope);
- GRID.forEach(k=>$('#c'+k).textContent=ss.filter(s=>s.kv===k).length);
- $('#cgen').textContent=ss.filter(s=>!isGrid(s)).length;
+ GRID.forEach(k=>$('#c'+k).textContent=ss.filter(s=>s.kv===k).length);$('#cgen').textContent=ss.filter(s=>!isGrid(s)).length;
  $('#cEx').textContent=ss.filter(s=>s.status==='Existing').length;$('#cUC').textContent=ss.filter(s=>s.status==='UC').length;$('#cPr').textContent=ss.filter(s=>s.status==='Proposed').length}
+function strip(){const ds=D.filter(inScope),g=S.filter(s=>inScope(s)&&isGrid(s)),a=agg(ds);
+ const c=k=>g.filter(s=>s.kv===k&&s.status==='Existing').length,p=k=>g.filter(s=>s.kv===k&&s.status!=='Existing').length;
+ const ex=g.filter(s=>s.status==='Existing').length;
+ const cells=[['Grid sub-stations in service',ex,g.length-ex,null],['765 kV',c('765'),p('765'),'765'],['400 kV',c('400'),p('400'),'400'],['220 kV',c('220'),p('220'),'220'],['132 kV',c('132'),p('132'),'132'],['Area within 20 km of a GSS',f1(a.cov)+'%',null,null],['Population per GSS (2011)',f1(a.pop/1e5/ex)+' lakh',null,null]];
+ $('#strip').innerHTML=cells.map(x=>`<div><small>${x[3]?`<span class="kd" style="background:${KVC[x[3]]}"></span>`:''}${x[0]}</small><b class="num">${x[1]}</b>${x[2]?`<i title="Under construction / proposed">+${x[2]} planned</i>`:''}</div>`).join('')}
 
 /* ---------- map ---------- */
 function polyCenter(f){let rings=f.geometry.type==='Polygon'?[f.geometry.coordinates[0]]:f.geometry.coordinates.map(p=>p[0]);let best=null,ba=0;
  rings.forEach(r=>{let a=0,cx=0,cy=0;for(let i=0;i<r.length-1;i++){const k=r[i][0]*r[i+1][1]-r[i+1][0]*r[i][1];a+=k;cx+=(r[i][0]+r[i+1][0])*k;cy+=(r[i][1]+r[i+1][1])*k}if(Math.abs(a)>ba){ba=Math.abs(a);best=[cy/(3*a),cx/(3*a)]}});return best}
+function setK(){const b=BOUNDS,p1=map.latLngToContainerPoint([b.north,b.west]),p2=map.latLngToContainerPoint([b.north,b.east]);$('#map').style.setProperty('--k',((p2.x-p1.x)/4828).toFixed(4))}
 function initMap(){
  if(map)return;
- map=L.map('map',{zoomSnap:.25,zoomDelta:.5}).fitBounds(BIHAR);
- map.attributionControl.setPrefix('');map.attributionControl.addAttribution('Network: BSPHCL map (2020) · Boundaries: Census 2011');
+ map=L.map('map',{zoomSnap:.25,zoomDelta:.5,minZoom:6,maxZoom:10.5}).fitBounds(BIHAR,{padding:[10,10]});
+ map.attributionControl.setPrefix('');map.attributionControl.addAttribution('Network: BSPHCL (Aug 2020) · Boundaries &amp; population: Census 2011');
  L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
  map.createPane('dist').style.zIndex=300;map.createPane('lines').style.zIndex=350;map.createPane('rings').style.zIndex=360;
  const b=[[BOUNDS.south,BOUNDS.west],[BOUNDS.north,BOUNDS.east]];
  origLayer=L.imageOverlay('data/original_map.jpg',b,{opacity:.9,pane:'lines'});
- for(const k of['l132','l220','l400','l765'])lineLayers[k]=L.imageOverlay(`data/${k}.png`,b,{pane:'lines',opacity:.95}).addTo(map);
+ for(const k of['l132','l220','l400','l765'])lineLayers[k]=L.imageOverlay(`data/${k}.png`,b,{pane:'lines'}).addTo(map);
  distLayer=L.geoJSON(GEO,{pane:'dist',style:distStyle,onEachFeature:(f,l)=>{
-  const d=()=>D.find(x=>x.district===f.properties.district);
   l.on('click',()=>openDist(f.properties.district));
-  l.on('mouseover',()=>l.setStyle({weight:2.5,color:'#0e7490'}));l.on('mouseout',()=>distLayer.resetStyle(l));
-  l.bindTooltip(()=>{const x=d();return`<b>${esc(x.district)}</b> · ${x.discom}<br>${x.gss_existing} grid sub-stations · ${x.cov20}% area within 20 km<br>Status: ${x.band} (${x.score}/100)`},{sticky:true})}}).addTo(map);
+  l.on('mouseover',()=>{l.setStyle({weight:2.4,color:'#1e3a5f'});info(f.properties.district)});
+  l.on('mouseout',()=>{if(l!==selLayer)distLayer.resetStyle(l);info(curD)})}}).addTo(map);
  labLayer=L.layerGroup();GEO.features.forEach(f=>L.tooltip({permanent:true,direction:'center',className:'dlab',interactive:false}).setLatLng(polyCenter(f)).setContent(f.properties.district).addTo(labLayer));labLayer.addTo(map);
  ptLayer=L.layerGroup().addTo(map);ringLayer=L.layerGroup();
  document.querySelectorAll('[data-l]').forEach(c=>c.onchange=()=>c.checked?lineLayers[c.dataset.l].addTo(map):map.removeLayer(lineLayers[c.dataset.l]));
- document.querySelectorAll('.kvf,.stf,#tLab').forEach(c=>c.onchange=drawPoints);
+ document.querySelectorAll('.kvf,.stf,#names-mode').forEach(c=>c.onchange=drawPoints);
  $('#tRing').onchange=()=>$('#tRing').checked?ringLayer.addTo(map):map.removeLayer(ringLayer);
  $('#tDl').onchange=()=>$('#tDl').checked?labLayer.addTo(map):map.removeLayer(labLayer);
  $('#tOrig').onchange=()=>$('#tOrig').checked?origLayer.addTo(map):map.removeLayer(origLayer);
- $('#shade').onchange=()=>{distLayer.setStyle(distStyle);legend()};
- $('#names').innerHTML=S.map(s=>`<option value="${esc(s.name+' — '+s.kv+(isGrid(s)?' kV':''))}">`).join('')+D.map(d=>`<option value="${esc(d.district+' (district)')}">`).join('');
- $('#find').onchange=()=>{const v=$('#find').value;const s=S.find(x=>(x.name+' — '+x.kv+(isGrid(x)?' kV':''))===v);if(s)return flyTo(s.id);const d=D.find(x=>x.district+' (district)'===v||x.district.toLowerCase()===v.toLowerCase());if(d)openDist(d.district)};
+ $('#shade').onchange=()=>{distLayer.setStyle(distStyle);hiSel();legend()};
+ $('#names').innerHTML=S.map(s=>`<option value="${esc(s.name+' — '+(isGrid(s)?s.kv+' kV':s.kv))}">`).join('')+D.map(d=>`<option value="${esc(d.district+' (district)')}">`).join('');
+ $('#find').onchange=()=>{const v=$('#find').value;const s=S.find(x=>(x.name+' — '+(isGrid(x)?x.kv+' kV':x.kv))===v);if(s)return flyTo(s.id);const d=D.find(x=>x.district+' (district)'===v||x.district.toLowerCase()===v.trim().toLowerCase());if(d)openDist(d.district)};
  const probe=new Image();probe.onload=()=>$('#tStreetW').classList.remove('hide');probe.src='https://tile.openstreetmap.org/7/94/54.png';
- streetLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap',opacity:.5});
+ streetLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap',opacity:.45});
  $('#tStreet').onchange=()=>$('#tStreet').checked?streetLayer.addTo(map):map.removeLayer(streetLayer);
+ map.on('mousemove',e=>$('#coord').textContent=`${e.latlng.lat.toFixed(4)}° N   ${e.latlng.lng.toFixed(4)}° E`);
+ map.on('zoom zoomend',()=>{setK();toggleNames()});setK();if(innerWidth>1100&&innerHeight>760)$('#lgd').open=true;
 }
-const SEQ=['#f0f9ff','#bae6fd','#7dd3fc','#38bdf8','#0284c7','#075985'];
-const REV={mean_dist_km:1,pop_lakh_per_gss:1};
+function hiSel(){if(selLayer){selLayer.setStyle({weight:2.6,color:'#1e3a5f'});selLayer.bringToFront()}}
+function toggleNames(){$('#map').classList.toggle('nodl',map.getZoom()<7.5&&$('#map').clientWidth<600);const m=$('#names-mode').value,show=m==='on'||(m==='auto'&&map.getZoom()>=8.75);
+ Object.values(markers).forEach(mk=>{if(mk.getTooltip())show?mk.openTooltip():mk.closeTooltip()})}
+const SEQ=['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c'];
+const BAD={mean_dist_km:1,pop_lakh_per_gss:1};
+const SN={cov20:'Area within 20 km (%)',mean_dist_km:'Average distance (km)',gss_existing:'Sub-stations in service',pop_lakh_per_gss:'Population per GSS (lakh)'};
 function rng(k){const v=D.map(d=>d[k]).filter(x=>x!=null);return[Math.min(...v),Math.max(...v)]}
-function distStyle(f){const d=D.find(x=>x.district===f.properties.district),k=$('#shade').value,dim=!inScope(d);let fill='#fff',op=0;
- if(k==='band'){fill=BCOL[d.band];op=.2}else if(k==='discom'){fill=d.discom==='SBPDCL'?'#2a78d6':'#eb6834';op=.16}
- else if(k!=='none'){const[a,b]=rng(k);const t=(d[k]-a)/((b-a)||1);fill=SEQ[Math.min(5,Math.floor(t*6))];op=.65}
- return{color:'#8b6fa3',weight:1.1,fillColor:fill,fillOpacity:dim?.02:op,opacity:dim?.3:.9}}
-function legend(){const k=$('#shade').value,el=$('#legend');
- if(k==='band')el.innerHTML=`<div class="lgd">${['Good','Watch','Weak'].map(b=>`<span style="width:16px;height:12px;background:${BCOL[b]};opacity:.5;border-radius:2px"></span><span>${b} — ${b==='Good'?'score 70+':b==='Watch'?'50–69':'below 50'}</span>`).join('')}</div>`;
- else if(k==='discom')el.innerHTML=`<div class="lgd"><span style="width:16px;height:12px;background:#2a78d6;opacity:.45"></span><span>SBPDCL (17 districts)</span><span style="width:16px;height:12px;background:#eb6834;opacity:.45"></span><span>NBPDCL (21 districts)</span></div>`;
- else if(k==='none')el.innerHTML='';
- else{const[a,b]=rng(k);el.innerHTML=`<div class="ramp" style="background:linear-gradient(90deg,${SEQ.join(',')})"></div><div class="rlab"><span>${f1(a)}</span><span>${f1(b)}</span></div>${REV[k]?'<div class="note">Darker = higher (worse)</div>':'<div class="note">Darker = higher (better)</div>'}`}}
+function distStyle(f){const d=D.find(x=>x.district===f.properties.district),k=$('#shade').value,dim=!inScope(d);let fill='#fbfaf7',op=.9;
+ if(k==='band'){fill=BCOL[d.band];op=.18}else if(k==='discom'){fill=d.discom==='SBPDCL'?'#2a78d6':'#eb6834';op=.14}
+ else if(k!=='none'){const[a,b]=rng(k);const t=(d[k]-a)/((b-a)||1);fill=SEQ[Math.min(6,Math.floor(t*7))];op=.75}
+ return{color:'#9a86ad',weight:1,fillColor:dim?'#eef0f3':fill,fillOpacity:dim?.7:op,opacity:dim?.4:.95}}
+function legend(){const k=$('#shade').value;
+ let h=`<div class="lg">`+GRID.map(v=>`<span class="sym">${symHTML(v,'Existing',1)}</span><span>${v} kV sub-station &amp; line <span class="ls" style="display:inline-block;width:14px;border-color:${KVC[v]};vertical-align:3px;margin-left:2px"></span></span>`).join('')+
+ `<span class="sym">${symHTML('220','UC',1)}</span><span>Under construction (dashed)</span><span class="sym">${symHTML('220','Proposed',1)}</span><span>Proposed</span><span class="sym">${symHTML('Thermal','Existing',1)}</span><span>Power station</span><span class="sym">${symHTML('HVDC','Existing',1)}</span><span>HVDC terminal / traction</span></div>`;
+ if(k==='band')h+=`<div class="lg" style="border-top:1px solid var(--line);padding-top:6px">${['Good','Watch','Weak'].map(b=>`<span style="width:18px;height:11px;background:${BCOL[b]};opacity:.35;border-radius:2px"></span><span>${b} rating</span>`).join('')}</div>`;
+ else if(k==='discom')h+=`<div class="lg" style="border-top:1px solid var(--line);padding-top:6px"><span style="width:18px;height:11px;background:#2a78d6;opacity:.3"></span><span>SBPDCL</span><span style="width:18px;height:11px;background:#eb6834;opacity:.3"></span><span>NBPDCL</span></div>`;
+ else if(k!=='none'){const[a,b]=rng(k);h+=`<div style="border-top:1px solid var(--line);padding-top:6px;margin-top:6px"><div class="note">${SN[k]} — darker = ${BAD[k]?'weaker':'better'}</div><div class="ramp" style="background:linear-gradient(90deg,${SEQ.join(',')})"></div><div style="display:flex;justify-content:space-between" class="note num"><span>${f1(a)}</span><span>${f1(b)}</span></div></div>`}
+ $('#lgdBody').innerHTML=h}
+function info(name){const d=name&&D.find(x=>x.district===name);
+ if(!d){const ds=D.filter(inScope),a=agg(ds);$('#info').innerHTML=`<h4>${scope==='Bihar'?'Bihar':scope}</h4><div class="note">Hover over a district to see its figures; click to open it.</div><div class="kv num"><span>Districts</span><b>${ds.length}</b><span>Area within 20 km</span><b>${f1(a.cov)}%</b><span>Average distance to GSS</span><b>${f1(a.mean)} km</b></div>`;return}
+ $('#info').innerHTML=`<h4>${esc(d.district)}</h4><span class="tag ${d.discom}">${d.discom}</span> <span class="tag ${d.band}">${d.band} · ${d.score}/100</span>
+ <div class="kv num"><span>Sub-stations in service</span><b>${d.gss_existing}${d.gss_planned?` <span style="color:var(--watch);font-weight:500">+${d.gss_planned}</span>`:''}</b><span>765 / 400 / 220 / 132 kV</span><b>${d.kv765} / ${d.kv400} / ${d.kv220} / ${d.kv132}</b><span>Area within 20 km</span><b>${d.cov20}%</b><span>Average distance to GSS</span><b>${f1(d.mean_dist_km)} km</b><span>Population per GSS</span><b>${f1(d.pop_lakh_per_gss)} lakh</b></div>`}
 function drawPoints(){
  ptLayer.clearLayers();ringLayer.clearLayers();markers={};
- const kv=new Set([...document.querySelectorAll('.kvf:checked')].map(c=>c.value)),st=new Set([...document.querySelectorAll('.stf:checked')].map(c=>c.value)),lab=$('#tLab').checked;
+ const kv=new Set([...document.querySelectorAll('.kvf:checked')].map(c=>c.value)),st=new Set([...document.querySelectorAll('.stf:checked')].map(c=>c.value)),nm=$('#names-mode').value;
  const ord={'132':1,'220':2,'400':3,'765':4};
  [...S].sort((a,b)=>(ord[a.kv]||0)-(ord[b.kv]||0)).forEach(s=>{
   if(!kv.has(isGrid(s)?s.kv:'gen')||!st.has(s.status))return;
   const m=L.marker([s.lat,s.lon],{icon:icon(s),opacity:inScope(s)?1:.3,zIndexOffset:(ord[s.kv]||5)*100,riseOnHover:true,title:s.name});
-  m.bindPopup(()=>`<div class="pp"><h4>${esc(s.name)}</h4><table><tr><td>Type</td><td><b style="color:${KVC[s.kv]}">${kvLabel(s)}</b>${s.note?' · '+esc(s.note):''}</td></tr><tr><td>Status</td><td><span class="bd ${s.status}">${stLabel(s.status)}</span></td></tr><tr><td>Owner</td><td>${esc(s.owner)}</td></tr><tr><td>District</td><td><span class="lk" data-open="${esc(s.district)}">${esc(s.district)}</span> · <span class="bd ${s.discom}">${s.discom}</span></td></tr><tr><td>Location</td><td class="mono">${s.lat.toFixed(4)}°N, ${s.lon.toFixed(4)}°E</td></tr></table></div>`);
-  if(lab)m.bindTooltip(s.name,{permanent:true,direction:'right',offset:[7,0],className:'slab'});
+  m.bindPopup(()=>`<div class="pp"><h4>${esc(s.name)}</h4><table><tr><td>Type</td><td><b style="color:${KVC[s.kv]}">${kvLabel(s)}</b></td></tr>${s.note?`<tr><td>Details</td><td>${esc(s.note)}</td></tr>`:''}<tr><td>Status</td><td><span class="tag ${s.status}">${STL[s.status]}</span></td></tr><tr><td>Owner</td><td>${esc(s.owner)}</td></tr><tr><td>District</td><td><span class="lk" data-open="${esc(s.district)}">${esc(s.district)}</span> <span class="tag ${s.discom}">${s.discom}</span></td></tr><tr><td>Position</td><td class="mono">${s.lat.toFixed(4)}° N, ${s.lon.toFixed(4)}° E</td></tr></table></div>`);
+  if(nm!=='off')m.bindTooltip(s.name,{permanent:true,direction:'right',offset:[({'132':12,'220':16,'400':22,'765':24})[s.kv]||14,0],className:'slab'});
   m.addTo(ptLayer);markers[s.id]=m;
-  if(isGrid(s)&&s.status==='Existing'&&inScope(s))L.circle([s.lat,s.lon],{radius:20000,pane:'rings',color:KVC[s.kv],weight:.6,fillColor:KVC[s.kv],fillOpacity:.05,interactive:false}).addTo(ringLayer);
- })}
-document.addEventListener('click',e=>{const a=e.target.closest('[data-open]');if(a){openDist(a.dataset.open)}const f=e.target.closest('[data-fly]');if(f)flyTo(+f.dataset.fly)});
+  if(isGrid(s)&&s.status==='Existing'&&inScope(s))L.circle([s.lat,s.lon],{radius:20000,pane:'rings',color:KVC[s.kv],weight:.7,fillColor:KVC[s.kv],fillOpacity:.05,interactive:false}).addTo(ringLayer)});
+ toggleNames()}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-open]');if(a)openDist(a.dataset.open);const f=e.target.closest('[data-fly]');if(f)flyTo(+f.dataset.fly)});
 function flyTo(id){const s=S.find(x=>x.id===id);if(!s)return;
  document.querySelectorAll('.kvf,.stf').forEach(c=>c.checked=true);drawPoints();
- if(innerWidth<=900)document.getElementById('map').scrollIntoView({block:'start'});
+ if(innerWidth<=900)document.querySelector('.mapw').scrollIntoView({block:'start'});
  map.flyTo([s.lat,s.lon],10,{duration:.8});setTimeout(()=>markers[id]&&markers[id].openPopup(),850)}
 
-/* ---------- tabs ---------- */
 function tab(t){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t))}
-document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{tab(b.dataset.t);if(b.dataset.t==='dis')renderDis()});
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 
-/* ---------- analysis ---------- */
-function vbars(ss){const max=Math.max(1,...GRID.map(k=>ss.filter(s=>s.kv===k).length));
- return GRID.map(k=>{const e=ss.filter(s=>s.kv===k&&s.status==='Existing').length,p=ss.filter(s=>s.kv===k&&s.status!=='Existing').length;
-  return`<div class="vb"><span><b style="color:${KVC[k]}">${k} kV</b></span><span class="tr"><i style="width:${e/max*100}%;background:${KVC[k]}"></i><i style="width:${p/max*100}%;background:repeating-linear-gradient(45deg,${KVC[k]}55 0 4px,#fff 4px 7px)"></i></span><span class="n">${e}${p?` <span style="color:var(--watch)">+${p}</span>`:''}</span></div>`}).join('')+`<div class="note">Solid = existing · hatched = under construction / proposed</div>`}
-function renderSum(){
- const ds=D.filter(inScope),ss=S.filter(inScope),g=ss.filter(isGrid),ex=g.filter(s=>s.status==='Existing'),a=agg(ds);
- const ehv=ex.filter(s=>s.kv!=='132').length,noEhv=ds.filter(d=>!d.has_ehv);
- const K=[['Grid sub-stations',ex.length],['Under constr./proposed',g.length-ex.length],['220 kV and above',ehv],['Area within 20 km',f1(a.cov)+'%'],['After planned works',f1(a.covp)+'%'],['Avg distance to GSS',f1(a.mean)+' km'],['Population per GSS',f1(a.pop/1e5/ex.length)+' L'],['Generating stations',ss.filter(s=>['Thermal','Hydro'].includes(s.kv)).length],['Districts',ds.length]];
- const big=ds.filter(d=>d.area_km2>800);
- const weakReach=[...big].sort((x,y)=>x.cov20-y.cov20).slice(0,4);
- const heavy=[...ds].filter(d=>d.pop_lakh_per_gss).sort((x,y)=>y.pop_lakh_per_gss-x.pop_lakh_per_gss).slice(0,4);
- const pipe=g.filter(s=>s.status!=='Existing');
+/* ---------- overview ---------- */
+function renderOv(){
+ const ds=D.filter(inScope),ss=S.filter(inScope),g=ss.filter(isGrid),a=agg(ds),ex=g.filter(s=>s.status==='Existing');
+ const cnt=(k,st)=>g.filter(s=>s.kv===k&&s.status===st).length;
+ const mat=`<div class="box"><table class="num"><thead><tr><th>Voltage</th><th class="r">In service</th><th class="r">Under constr.</th><th class="r">Proposed</th><th class="r">Total</th></tr></thead><tbody>${GRID.map(k=>`<tr><td><span class="kvt" style="color:${KVC[k]}">${k} kV</span></td><td class="r">${cnt(k,'Existing')}</td><td class="r">${cnt(k,'UC')||'–'}</td><td class="r">${cnt(k,'Proposed')||'–'}</td><td class="r"><b>${g.filter(s=>s.kv===k).length}</b></td></tr>`).join('')}</tbody>
+ <tfoot><tr><td>Total</td><td class="r">${ex.length}</td><td class="r">${g.filter(s=>s.status==='UC').length}</td><td class="r">${g.filter(s=>s.status==='Proposed').length}</td><td class="r">${g.length}</td></tr></tfoot></table></div>
+ <div class="note" style="margin-top:6px">Also on the map: ${ss.filter(s=>s.kv==='Thermal').length} thermal and ${ss.filter(s=>s.kv==='Hydro').length} hydro power stations, ${ss.filter(s=>s.kv==='HVDC').length} HVDC terminal and ${ss.filter(s=>s.kv==='TSS').length} railway traction sub-stations.</div>`;
  const lk=d=>`<span class="lk" data-open="${esc(d.district)}">${esc(d.district)}</span>`;
- const F=[];
- F.push(['',`<b>${f1(a.cov)}%</b> of the ${scope==='Bihar'?'state':scope+' area'} lies within 20 km of an existing grid sub-station; projects shown on the map would lift this to <b>${f1(a.covp)}%</b>.`]);
- if(noEhv.length)F.push(['a',`<b>${noEhv.length} district${noEhv.length>1?'s have':' has'} no 220 kV or higher sub-station</b> and depend on 132 kV from neighbours: ${noEhv.map(lk).join(', ')}.`]);
- F.push(['w',`Weakest reach (larger districts): ${weakReach.map(d=>`${lk(d)} ${d.cov20}%`).join(', ')} — farthest points are ${f1(Math.max(...weakReach.map(d=>d.max_dist_km)))} km from a GSS.`]);
- F.push(['w',`Heaviest load base: ${heavy.map(d=>`${lk(d)} ${f1(d.pop_lakh_per_gss)} lakh/GSS`).join(', ')} (Census 2011 population).`]);
- if(pipe.length)F.push(['',`Pipeline on the map: <b>${pipe.length}</b> sub-stations — ${GRID.map(k=>[k,pipe.filter(s=>s.kv===k).length]).filter(x=>x[1]).map(x=>x[1]+' × '+x[0]+' kV').join(', ')}. Many of these may since have been commissioned.`]);
- const cmp=['SBPDCL','NBPDCL'].map(k=>{const dd=D.filter(d=>d.discom===k),aa=agg(dd),gg=S.filter(s=>s.discom===k&&isGrid(s)),ee=gg.filter(s=>s.status==='Existing');return{k,d:dd.length,area:aa.area,pop:aa.pop,ex:ee.length,ehv:ee.filter(s=>s.kv!=='132').length,pl:gg.length-ee.length,cov:aa.cov,mean:aa.mean,ppg:aa.pop/1e5/ee.length,noE:dd.filter(d=>!d.has_ehv).length,weak:dd.filter(d=>d.band==='Weak').length}});
+ const big=ds.filter(d=>d.area_km2>800),noE=ds.filter(d=>!d.has_ehv);
+ const weakR=[...big].sort((x,y)=>x.cov20-y.cov20).slice(0,4),heavy=[...ds].filter(d=>d.pop_lakh_per_gss).sort((x,y)=>y.pop_lakh_per_gss-x.pop_lakh_per_gss).slice(0,4);
+ const pipe=g.filter(s=>s.status!=='Existing');
+ const F=[`<b>${f1(a.cov)}%</b> of the area lies within 20 km of a grid sub-station in service (average distance ${f1(a.mean)} km). Completing the works shown on the map lifts this to <b>${f1(a.covp)}%</b>.`];
+ if(noE.length)F.push(`<b>${noE.length} of ${ds.length} districts have no 220 kV or higher sub-station</b> and are fed at 132 kV from neighbouring districts: ${noE.map(lk).join(', ')}.`);
+ if(weakR.length)F.push(`Weakest coverage among larger districts: ${weakR.map(d=>`${lk(d)} (${d.cov20}%)`).join(', ')}. Some areas are up to ${f1(Math.max(...weakR.map(d=>d.max_dist_km)))} km from a sub-station.`);
+ F.push(`Highest population per sub-station: ${heavy.map(d=>`${lk(d)} (${f1(d.pop_lakh_per_gss)} lakh)`).join(', ')}, against ${f1(a.pop/1e5/ex.length)} lakh on average.`);
+ if(pipe.length)F.push(`<b>${pipe.length}</b> sub-stations are under construction or proposed on the map (${GRID.map(k=>[k,pipe.filter(s=>s.kv===k).length]).filter(x=>x[1]).map(x=>x[1]+' × '+x[0]+' kV').join(', ')}). Several may since have been commissioned.`);
+ const cmp=['SBPDCL','NBPDCL'].map(k=>{const dd=D.filter(d=>d.discom===k),aa=agg(dd),gg=S.filter(s=>s.discom===k&&isGrid(s)),ee=gg.filter(s=>s.status==='Existing');return{d:dd.length,area:aa.area,pop:aa.pop/1e5,ex:ee.length,ehv:ee.filter(s=>s.kv!=='132').length,pl:gg.length-ee.length,cov:aa.cov,mean:aa.mean,ppg:aa.pop/1e5/ee.length,apg:aa.area/ee.length,noE:dd.filter(d=>!d.has_ehv).length,weak:dd.filter(d=>d.band==='Weak').length}});
+ const CR=[['Districts','d',fmt],['Area (km²)','area',fmt],['Population 2011 (lakh)','pop',fmt],['Sub-stations in service','ex',fmt],['of which 220 kV and above','ehv',fmt],['Under construction / proposed','pl',fmt],['Area within 20 km','cov',v=>f1(v)+'%'],['Average distance to GSS','mean',v=>f1(v)+' km'],['Population per GSS (lakh)','ppg',f1],['Area per GSS (km²)','apg',fmt],['Districts without 220 kV+','noE',fmt],['Districts rated Weak','weak',fmt]];
+ const att=[...ds].filter(d=>d.band==='Weak').sort((x,y)=>x.score-y.score);
  const own={};g.forEach(s=>{const o=['BSPTCL','PGCIL','BGCL'].includes(s.owner)?s.owner:'Others';own[o]=(own[o]||0)+1});
- $('#p-sum').innerHTML=`<div class="kg">${K.map(k=>`<div><small>${k[0]}</small><b>${typeof k[1]==='number'?fmt(k[1]):k[1]}</b></div>`).join('')}</div>
- <div class="sec">Key findings</div><ul class="find">${F.map(f=>`<li class="${f[0]}">${f[1]}</li>`).join('')}</ul>
- <div class="sec">Sub-stations by voltage</div>${vbars(g)}
- <div class="sec">DISCOM comparison</div>
- <table class="cmp"><thead><tr><th></th><th class="r"><span class="bd SBPDCL">SBPDCL</span></th><th class="r"><span class="bd NBPDCL">NBPDCL</span></th></tr></thead><tbody>
- ${[['Districts','d',fmt],['Area (km²)','area',fmt],['Population 2011 (lakh)','pop',v=>fmt(v/1e5)],['Grid sub-stations','ex',fmt],['220 kV and above','ehv',fmt],['Under constr./proposed','pl',fmt],['Area within 20 km','cov',v=>f1(v)+'%'],['Avg distance to GSS','mean',v=>f1(v)+' km'],['Population per GSS (lakh)','ppg',f1],['Districts without 220 kV+','noE',fmt],['Districts rated Weak','weak',fmt]].map(r=>`<tr style="cursor:default"><td>${r[0]}</td><td class="r">${r[2](cmp[0][r[1]])}</td><td class="r">${r[2](cmp[1][r[1]])}</td></tr>`).join('')}</tbody></table>
- <div class="sec">Ownership</div>${Object.entries(own).map(([k,v])=>`<div class="vb"><span>${k}</span><span class="tr"><i style="width:${v/g.length*100}%;background:#64748b"></i></span><span class="n">${v}</span></div>`).join('')}
- <div class="sec">Method</div>
- <details><summary>How these figures are worked out</summary><ul>
-  <li>Sub-stations, voltages and status are read from the BSPHCL Comprehensive Bihar Map (13th Plan edition, revised Aug 2020). Status is as on that map.</li>
-  <li>The map was matched to Census 2011 district boundaries; positions are as drawn and approximate (1–3 km). Districts near borders were checked by name.</li>
-  <li>Area within 20 km: share of district area within 20 km (straight line) of an existing grid sub-station of 132 kV or above — a guide to 33 kV feeder lengths.</li>
-  <li>Overall status (0–100): reach × 0.45, +25 if the district has a 220 kV+ sub-station, up to +30 for low population per GSS. Good ≥ 70, Watch 50–69, Weak &lt; 50.</li>
+ const ON={BSPTCL:'BSPTCL',PGCIL:'POWERGRID (PGCIL)',BGCL:'Bihar Grid Co. (BGCL)',Others:'Railways / bulk consumer'};
+ $('#p-ov').innerHTML=`<h3 class="s">Network summary${scope!=='Bihar'?' · '+scope:''}</h3>${mat}
+ <h3 class="s">Key findings</h3><ol class="fd">${F.map(f=>`<li><span>${f}</span></li>`).join('')}</ol>
+ <h3 class="s">DISCOM comparison</h3><div class="box"><table class="num"><thead><tr><th></th><th class="r"><span class="tag SBPDCL">SBPDCL</span></th><th class="r"><span class="tag NBPDCL">NBPDCL</span></th></tr></thead><tbody>${CR.map(r=>`<tr><td style="color:var(--muted)">${r[0]}</td><td class="r">${r[2](cmp[0][r[1]])}</td><td class="r">${r[2](cmp[1][r[1]])}</td></tr>`).join('')}</tbody></table></div>
+ <h3 class="s">Districts needing attention</h3>${att.length?`<div class="box"><table><tbody>${att.map(d=>`<tr class="ck" data-open="${esc(d.district)}"><td style="white-space:normal"><b>${esc(d.district)}</b> <span class="tag ${d.discom}" style="font-size:10px">${d.discom}</span><div class="note">${esc(d.flags.filter(f=>!/under construction/.test(f)).join(' · '))}</div></td><td class="r"><span class="tag Weak">${d.score}</span></td></tr>`).join('')}</tbody></table></div>`:'<div class="note">No district in this area is rated Weak.</div>'}
+ <h3 class="s">Ownership of grid sub-stations</h3><div class="box"><table class="num"><tbody>${Object.entries(own).sort((x,y)=>y[1]-x[1]).map(([k,v])=>`<tr><td>${ON[k]}</td><td style="width:42%"><div class="mb"><span class="t"><i style="width:${v/g.length*100}%;background:var(--navy)"></i></span></div></td><td class="r">${v}</td></tr>`).join('')}</tbody></table></div>
+ <h3 class="s">About the data</h3><details class="ab"><summary>Sources and method</summary><ul>
+  <li>Sub-stations, voltages and status are read from the BSPHCL Comprehensive Bihar Map (13th Plan edition, revised Aug 2020). Status is as shown on that map.</li>
+  <li>The scanned map was matched to Census 2011 district boundaries. Positions are as drawn on the map and are approximate (1–3 km).</li>
+  <li><b>Area within 20 km</b>: share of district area within 20 km (straight line) of a grid sub-station (132 kV and above) in service — an indicator of 33 kV feeder length.</li>
+  <li><b>Overall rating</b> (0–100): coverage × 0.45; +25 where the district has a 220 kV or higher sub-station; up to +30 for low population per sub-station. Good 70+, Watch 50–69, Weak below 50.</li>
  </ul></details>`;
 }
 
 /* ---------- districts ---------- */
-let dSort=['score',-1],curD=null;
-const DC=[['district','District'],['discom','DISCOM'],['gss_existing','GSS','r'],['gss_planned','+Plan','r'],['cov20','≤20 km','r'],['pop_lakh_per_gss','L/GSS','r'],['score','Status','r']];
+let dSort=['score',-1];
+const DC=[['district','District'],['gss_existing','GSS','r'],['cov20','Within 20 km'],['pop_lakh_per_gss','Pop./GSS','r'],['score','Rating','r']];
 function renderDis(){
  if(curD)return openDist(curD,true);
- const ds=D.filter(inScope).sort((x,y)=>{const[k,o]=dSort;const a=x[k]??-1,b=y[k]??-1;return(a>b?1:a<b?-1:0)*o});
- $('#p-dis').innerHTML=`<div class="note" style="margin-bottom:8px">Click a district for details. Click a heading to sort.</div><div class="tb"><table><thead><tr>${DC.map(([k,l,c])=>`<th data-k="${k}" class="${c||''} ${dSort[0]===k?'s'+(dSort[1]<0?' d':''):''}">${l}</th>`).join('')}</tr></thead><tbody>${ds.map(d=>`<tr data-open="${esc(d.district)}"><td><b>${esc(d.district)}</b>${d.has_ehv?'':' <span title="No 220 kV+ sub-station" style="color:var(--watch)">●</span>'}</td><td><span class="bd ${d.discom}">${d.discom[0]}</span></td><td class="r">${d.gss_existing}</td><td class="r">${d.gss_planned||''}</td><td class="r">${d.cov20}%</td><td class="r">${f1(d.pop_lakh_per_gss)}</td><td class="r"><span class="bd ${d.band}">${d.band} ${d.score}</span></td></tr>`).join('')}</tbody></table></div><div class="note" style="margin-top:6px"><span style="color:var(--watch)">●</span> no 220 kV or higher sub-station in the district</div>`;
- $('#p-dis').querySelectorAll('th').forEach(th=>th.onclick=()=>{dSort=[th.dataset.k,dSort[0]===th.dataset.k?-dSort[1]:(th.dataset.k==='district'||th.dataset.k==='discom'?1:-1)];renderDis()});
+ const ds=D.filter(inScope).sort((x,y)=>{const[k,o]=dSort;const a=x[k]??-1,b=y[k]??-1;return(a>b?1:a<b?-1:0)*o||x.district.localeCompare(y.district)});
+ $('#p-dis').innerHTML=`<div class="note" style="margin-bottom:8px">${ds.length} districts · click a row to open · click a heading to sort</div>
+ <div class="box scroll"><table class="sortable num"><thead><tr>${DC.map(([k,l,c])=>`<th data-k="${k}" class="${c||''} ${dSort[0]===k?'s'+(dSort[1]<0?' d':''):''}">${l}</th>`).join('')}</tr></thead><tbody>${ds.map(d=>`<tr class="ck" data-open="${esc(d.district)}"><td><b>${esc(d.district)}</b> <span class="tag ${d.discom}" style="font-size:10px;padding:0 4px">${d.discom[0]}</span>${d.has_ehv?'':' <span title="No 220 kV or higher sub-station" style="color:var(--watch)">◆</span>'}</td><td class="r">${d.gss_existing}${d.gss_planned?`<span style="color:var(--watch);font-size:11px"> +${d.gss_planned}</span>`:''}</td><td><div class="mb"><span class="t"><i style="width:${d.cov20}%;background:${d.cov20>=90?'#16a34a':d.cov20>=75?'#d97706':'#dc2626'}"></i></span><span style="width:34px;text-align:right">${d.cov20}%</span></div></td><td class="r">${f1(d.pop_lakh_per_gss)} L</td><td class="r"><span class="tag ${d.band}">${d.score}</span></td></tr>`).join('')}</tbody></table></div>
+ <div class="note" style="margin-top:6px"><span style="color:var(--watch)">◆</span> no 220 kV or higher sub-station · +n under construction / proposed · S / N = SBPDCL / NBPDCL</div>`;
+ $('#p-dis').querySelectorAll('th').forEach(th=>th.onclick=()=>{dSort=[th.dataset.k,dSort[0]===th.dataset.k?-dSort[1]:(th.dataset.k==='district'?1:-1)];renderDis()});
 }
-function openDist(name,noFly){const d=D.find(x=>x.district===name);if(!d)return;curD=name;tab('dis');
+function openDist(name,noFly){const d=D.find(x=>x.district===name);if(!d)return;curD=name;tab('dis');info(name);
+ if(selLayer)distLayer.resetStyle(selLayer);selLayer=null;distLayer.eachLayer(l=>{if(l.feature.properties.district===name)selLayer=l});hiSel();
  const ss=S.filter(s=>s.district===name).sort((a,b)=>(+b.kv||0)-(+a.kv||0)||a.name.localeCompare(b.name));
- const K=[['Grid sub-stations',d.gss_existing],['Under constr./proposed',d.gss_planned],['220 kV and above',d.kv765+d.kv400+d.kv220],['Area within 20 km',d.cov20+'%'],['After planned works',d.cov20_planned+'%'],['Farthest point from GSS',f1(d.max_dist_km)+' km'],['Area',fmt(d.area_km2)+' km²'],['Population 2011',f1(d.population_2011/1e5)+' L'],['Population per GSS',f1(d.pop_lakh_per_gss)+' L']];
- $('#p-dis').innerHTML=`<button class="btn back" id="dBack">‹ All districts</button>
- <div class="dhd"><h3>${esc(name)}</h3><span class="bd ${d.discom}">${d.discom}</span><span class="bd ${d.band}">${d.band} · ${d.score}/100</span></div>
- <div class="kg">${K.map(k=>`<div><small>${k[0]}</small><b>${typeof k[1]==='number'?fmt(k[1]):k[1]}</b></div>`).join('')}</div>
- <div class="note">Average distance to the nearest grid sub-station is ${f1(d.mean_dist_km)} km. Nearest 220 kV or higher source is ${f1(d.centroid_to_220_km)} km from the district centre.</div>
- <div class="sec">Points to note</div><ul class="find">${d.flags.length?d.flags.map(f=>`<li class="${/No 220|Only|Large|High/.test(f)?'w':'a'}">${esc(f)}</li>`).join(''):'<li>No concerns on these measures.</li>'}</ul>
- <div class="sec">Sub-stations and plants (${ss.length})</div>
- <div class="tb" style="max-height:none"><table><thead><tr><th>Name</th><th>kV</th><th>Status</th><th>Owner</th></tr></thead><tbody>${ss.map(s=>`<tr data-fly="${s.id}"><td><b>${esc(s.name)}</b>${s.note?`<div class="note">${esc(s.note)}</div>`:''}</td><td><b style="color:${KVC[s.kv]}">${s.kv}</b></td><td><span class="bd ${s.status}">${stLabel(s.status)}</span></td><td>${esc(s.owner)}</td></tr>`).join('')||'<tr><td colspan="4">None on the map</td></tr>'}</tbody></table></div>`;
- $('#dBack').onclick=()=>{curD=null;renderDis();map.flyToBounds(scopeBounds(),{duration:.6})};
- if(!noFly){const f=GEO.features.find(f=>f.properties.district===name);map.flyToBounds(L.geoJSON(f).getBounds(),{padding:[30,30],duration:.7})}
- $('.rp').scrollTop=0;
-}
+ const st=agg(D),nEx=exGrid().length;
+ const cmpRow=(l,v,b,u,better)=>{const good=better==='hi'?v>=b:v<=b;return`<tr><td style="color:var(--muted);white-space:normal">${l}</td><td class="r"><b style="color:${good?'var(--good)':'var(--weak)'}">${good?'▲':'▼'} ${f1(v)}${u}</b></td><td class="r">${f1(b)}${u}</td></tr>`};
+ const fl=d.flags.map(f=>`<div class="callout ${/No 220|Only|High/.test(f)?'bad':''}">${esc(f)}</div>`).join('')||'<div class="callout ok">No concerns on these measures.</div>';
+ $('#p-dis').innerHTML=`<button class="btn" id="dBack">‹ All districts</button>
+ <div class="dh"><h2>${esc(name)}</h2><span class="tag ${d.discom}">${d.discom}</span><span class="tag ${d.band}">${d.band} · ${d.score}/100</span></div>
+ <div class="note">Area ${fmt(d.area_km2)} km² · population ${f1(d.population_2011/1e5)} lakh (Census 2011)</div>
+ <h3 class="s">Compared with Bihar</h3><div class="box"><table class="num"><thead><tr><th>Measure</th><th class="r">District</th><th class="r">Bihar</th></tr></thead><tbody>
+ ${cmpRow('Area within 20 km of a GSS',d.cov20,st.cov,'%','hi')}${cmpRow('After planned works',d.cov20_planned,st.covp,'%','hi')}${cmpRow('Average distance to GSS',d.mean_dist_km,st.mean,' km','lo')}${cmpRow('Population per GSS (lakh)',d.pop_lakh_per_gss,st.pop/1e5/nEx,'','lo')}${cmpRow('Area per GSS (km²)',d.area_per_gss,st.area/nEx,'','lo')}
+ <tr><td style="color:var(--muted)">Farthest point from a GSS</td><td class="r"><b>${f1(d.max_dist_km)} km</b></td><td></td></tr>
+ <tr><td style="color:var(--muted)">Nearest 220 kV+ source from centre</td><td class="r"><b>${f1(d.centroid_to_220_km)} km</b></td><td></td></tr></tbody></table></div><div class="note" style="margin-top:4px"><span style="color:var(--good)">▲</span> better than state average · <span style="color:var(--weak)">▼</span> weaker</div>
+ <h3 class="s">Sub-stations by voltage</h3><div class="box"><table class="num"><thead><tr><th>Voltage</th><th class="r">In service</th><th class="r">Under constr. / proposed</th></tr></thead><tbody>${GRID.map(k=>{const e=ss.filter(s=>s.kv===k&&s.status==='Existing').length,p=ss.filter(s=>s.kv===k&&s.status!=='Existing').length;return`<tr><td><span class="kvt" style="color:${KVC[k]}">${k} kV</span></td><td class="r">${e||'–'}</td><td class="r">${p||'–'}</td></tr>`}).join('')}</tbody></table></div>
+ <h3 class="s">Points to note</h3>${fl}
+ <h3 class="s">Sub-stations and plants (${ss.length})</h3><div class="box"><table><thead><tr><th>Name</th><th>kV</th><th>Status</th><th>Owner</th></tr></thead><tbody>${ss.map(s=>`<tr class="ck" data-fly="${s.id}"><td><b>${esc(s.name)}</b>${s.note?`<div class="note">${esc(s.note)}</div>`:''}</td><td><span class="kvt" style="color:${KVC[s.kv]}">${s.kv}</span></td><td><span class="tag ${s.status}">${STL[s.status]}</span></td><td>${esc(s.owner)}</td></tr>`).join('')||'<tr><td colspan="4" class="note">None on the map</td></tr>'}</tbody></table></div>`;
+ $('#dBack').onclick=closeDist;
+ if(!noFly){const f=GEO.features.find(f=>f.properties.district===name);map.flyToBounds(L.geoJSON(f).getBounds(),{padding:[40,40],duration:.7})}
+ $('.rp').scrollTop=0}
+function closeDist(){curD=null;if(selLayer){distLayer.resetStyle(selLayer);selLayer=null}info();renderDis();map.flyToBounds(scopeBounds(),{duration:.6})}
 
 /* ---------- register ---------- */
 const RC=[['name','Name'],['kv','kV'],['status','Status'],['district','District'],['owner','Owner']];let rSort=['district',1];
@@ -381,17 +433,16 @@ function regRows(){const q=$('#q').value.trim().toLowerCase(),kv=$('#fkv').value
  return S.filter(inScope).filter(s=>(!kv||s.kv===kv)&&(!st||s.status===st)&&(!q||[s.name,s.district,s.owner,s.note,s.kv,s.discom].join(' ').toLowerCase().includes(q))).sort((a,b)=>{const[k,o]=rSort;let x=a[k],y=b[k];if(k==='kv'){x=+x||0;y=+y||0}return(x>y?1:x<y?-1:a.name.localeCompare(b.name))*o})}
 function renderReg(){const rows=regRows();
  $('#reg thead').innerHTML='<tr>'+RC.map(([k,l])=>`<th data-k="${k}" class="${rSort[0]===k?'s'+(rSort[1]<0?' d':''):''}">${l}</th>`).join('')+'</tr>';
- $('#reg tbody').innerHTML=rows.map(s=>`<tr data-fly="${s.id}"><td><b>${esc(s.name)}</b></td><td><b style="color:${KVC[s.kv]}">${s.kv}</b></td><td><span class="bd ${s.status}">${stLabel(s.status)}</span></td><td>${esc(s.district)}</td><td>${esc(s.owner)}</td></tr>`).join('');
- $('#regCount').textContent=`${rows.length} of ${S.filter(inScope).length} entries`;
+ $('#reg tbody').innerHTML=rows.map(s=>`<tr class="ck" data-fly="${s.id}"><td><b>${esc(s.name)}</b></td><td><span class="kvt" style="color:${KVC[s.kv]}">${s.kv}</span></td><td><span class="tag ${s.status}">${STL[s.status]}</span></td><td>${esc(s.district)}</td><td>${esc(s.owner)}</td></tr>`).join('');
+ $('#regCount').textContent=`${rows.length} of ${S.filter(inScope).length} entries · click a row to locate it`;
  $('#reg thead').querySelectorAll('th').forEach(th=>th.onclick=()=>{rSort=[th.dataset.k,rSort[0]===th.dataset.k?-rSort[1]:1];renderReg()})}
 ['#q','#fkv','#fst'].forEach(s=>$(s).addEventListener('input',renderReg));
 $('#copy').onclick=async()=>{const h=['name','kv','status','owner','district','discom','note','lat','lon'];const csv=[h.join(',')].concat(regRows().map(r=>h.map(k=>`"${String(r[k]).replace(/"/g,'""')}"`).join(','))).join('\n');
- try{await navigator.clipboard.writeText(csv);$('#copy').textContent='Copied ✓'}catch(e){$('#copy').textContent='Copy blocked'}setTimeout(()=>$('#copy').textContent='Copy CSV',1800)};
+ try{await navigator.clipboard.writeText(csv);$('#copy').textContent='Copied ✓'}catch(e){$('#copy').textContent='Copy not allowed here'}setTimeout(()=>$('#copy').textContent='Copy as CSV',1800)};
 
-/* ---------- scope ---------- */
 function scopeBounds(){if(scope==='Bihar')return L.latLngBounds(BIHAR);return L.geoJSON({type:'FeatureCollection',features:GEO.features.filter(f=>D.find(d=>d.district===f.properties.district).discom===scope)}).getBounds()}
-document.querySelectorAll('#scope button').forEach(b=>b.onclick=()=>{scope=b.dataset.s;curD=null;document.querySelectorAll('#scope button').forEach(x=>x.classList.toggle('on',x===b));renderAll();map.flyToBounds(scopeBounds(),{duration:.6})});
-addEventListener('keydown',e=>{if(e.key==='Escape'&&curD){curD=null;renderDis()}});
+document.querySelectorAll('#scope button').forEach(b=>b.onclick=()=>{scope=b.dataset.s;curD=null;if(selLayer){distLayer.resetStyle(selLayer);selLayer=null}document.querySelectorAll('#scope button').forEach(x=>x.classList.toggle('on',x===b));renderAll();map.flyToBounds(scopeBounds(),{duration:.6,padding:[10,10]})});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&curD)closeDist()});
 boot();
 </script>
 </body>
