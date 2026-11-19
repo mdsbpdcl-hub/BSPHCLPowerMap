@@ -5,7 +5,7 @@ An interactive, district-wise version of the BSPHCL **Comprehensive Bihar Map** 
 Open `index.html` (or the GitHub Pages site) to:
 
 - pan and zoom the transmission network with 765 / 400 / 220 / 132 kV line layers that switch on and off;
-- click any of the 196 sub-stations, generating stations, HVDC and traction points for voltage, status, owner, district and DISCOM;
+- click any of the 189 sub-stations, generating stations, HVDC and traction points for voltage, status, owner, district and DISCOM;
 - shade districts by overall status, area within 20 km of a grid sub-station, number of sub-stations, people per sub-station or DISCOM;
 - view the 20 km reach of every existing sub-station to see coverage gaps;
 - open any district for its figures, points to note and list of sub-stations;
